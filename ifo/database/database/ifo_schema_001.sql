@@ -169,6 +169,27 @@ INSERT INTO orcamento_mensal (id_usuario, id_categoria, limite_valor, mes_refere
 INSERT INTO investimento (id_usuario, valor_mensal, taxa_juros, tempo_meses, tipo_juros, montante_final) VALUES
 (1, 300.00, 1.00, 12, 'COMPOSTO', 3804.75);
 
+
+-- Alterar tipo da coluna para interfaces:
+ALTER TABLE transacao ALTER COLUMN tipo TYPE VARCHAR(20);
+ALTER TABLE categoria ALTER COLUMN tipo TYPE VARCHAR(20);
+ALTER TABLE investimento ALTER COLUMN tipo_juros TYPE VARCHAR(20);
+ALTER TABLE conta_carteira ALTER COLUMN tipo_conta TYPE VARCHAR(20);
+
+
+-- Tabela transacao
+ALTER TABLE transacao 
+ADD COLUMN IF NOT EXISTS categoria_tipo VARCHAR(255);
+
+-- Tabela orcamento_mensal
+ALTER TABLE orcamento_mensal 
+ADD COLUMN IF NOT EXISTS categoria VARCHAR(255),
+ADD COLUMN IF NOT EXISTS ano INTEGER;
+ALTER TABLE orcamento_mensal DROP COLUMN IF EXISTS categoria;
+ALTER TABLE orcamento_mensal DROP COLUMN IF EXISTS id_categoria;
+ALTER TABLE orcamento_mensal ADD COLUMN IF NOT EXISTS tipo_orcamento VARCHAR(20) NOT NULL DEFAULT 'NECESSIDADES';
+DELETE FROM orcamento_mensal;
+
 -- =====================================================
 -- CONSULTAS DE VALIDAÇÃO (TESTES)
 -- =====================================================
@@ -190,56 +211,11 @@ SELECT
   ROUND((valor_atual / valor_objetivo * 100), 2)::TEXT || '%' as percentual
 FROM meta_financeira;
 
-UPDATE usuario 
-SET senha = '123456' 
-WHERE email = 'douglas@ifo.teste';
-
--- Criar nova transação
-INSERT INTO transacao (id_usuario, id_conta, id_categoria, valor, tipo, data, descricao, paga)
-VALUES (1, 1, 3, 250.00, 'DESPESA', '2025-05-20', 'Teste de criação', TRUE);
-
-DELETE FROM transacao 
-WHERE descricao = 'Teste de criação' 
-AND id_usuario = 1;
-
--- Alterar tipo da coluna para interface
-ALTER TABLE transacao ALTER COLUMN tipo TYPE VARCHAR(20);
-ALTER TABLE categoria ALTER COLUMN tipo TYPE VARCHAR(20);
-ALTER TABLE investimento ALTER COLUMN tipo_juros TYPE VARCHAR(20);
-ALTER TABLE conta_carteira ALTER COLUMN tipo_conta TYPE VARCHAR(20);
-
-
--- Teste de consulta de transação
-SELECT 
-    id_transacao,
-    descricao,
-    valor,
-    tipo,
-    data,
-    paga
-FROM transacao
-WHERE id_usuario = 1
-ORDER BY data DESC;
-
-SELECT column_name 
-FROM information_schema.columns 
-WHERE table_name = 'categoria' 
-AND table_schema = 'public'
-ORDER BY ordinal_position;
-
--- Tabela transacao
-ALTER TABLE transacao 
-ADD COLUMN IF NOT EXISTS categoria_tipo VARCHAR(255);
-
--- Tabela orcamento_mensal
-ALTER TABLE orcamento_mensal 
-ADD COLUMN IF NOT EXISTS categoria VARCHAR(255),
-ADD COLUMN IF NOT EXISTS ano INTEGER;
-
+-- Teste de consultas simples
 ALTER TABLE orcamento_mensal ALTER COLUMN categoria DROP NOT NULL;
 
-SELECT * FROM orcamento_mensal WHERE id_usuario = 4;
-SELECT * FROM meta_financeira WHERE id_usuario = 4;
-SELECT * FROM transacao WHERE id_usuario = 4;
+SELECT * FROM orcamento_mensal WHERE id_usuario = 1;
+SELECT * FROM meta_financeira WHERE id_usuario = 1;
+SELECT * FROM transacao WHERE id_usuario = 1;
 
 SELECT * FROM usuario;
