@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IFO - Dashboard</title>
+    <link rel="stylesheet" href="css/estilo.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="logo">IFO</div>
+        <ul class="menu">
+          <li><a href="dashboard.html" class="ativo">Dashboard</a></li>
+          <li><a href="transacoes.html">Transações</a></li>
+          <li><a href="metas.html">Metas</a></li>
+          <li><a href="orcamentos.html">Orçamentos</a></li>
+          <li><a href="investimentos.html">Investimentos</a></li>
+        </ul>
+        <div class="usuario" id="nome-usuario" onclick="logout()">Douglas</div>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="card saldo">
+        <div class="flex">
+          <h2>Saldo Atual</h2>
+          <button class="btn btn-success" onclick="mostrarFormNovaTransacao()">
+            + Nova Transação
+          </button>
+        </div>
+        <p class="valor" id="saldo">R$ 0,00</p>
+      </section>
+
+      <section class="grid-2">
+        <div class="card receita">
+          <h3>Receitas</h3>
+          <p class="valor" id="total-receitas">R$ 0,00</p>
+        </div>
+        <div class="card despesa">
+          <h3>Despesas</h3>
+          <p class="valor" id="total-despesas">R$ 0,00</p>
+        </div>
+      </section>
+
+<section class="card">
+    <h3>📊 Regra 50/30/20</h3>
+    <div class="grid-3">
+        <div>
+            <p><strong>50% Necessidades</strong></p>
+            <p class="despesa" id="necessidades-valor">R$ 0,00</p>
+            <div class="progress-container">
+                <div class="progress-bar progress-green" style="width: 60%"></div>
+            </div>
+        </div>
+        <div>
+            <p><strong>30% Lazer</strong></p>
+            <p class="despesa" id="lazer-valor">R$ 0,00</p>
+            <div class="progress-container">
+                <div class="progress-bar progress-yellow" style="width: 67%"></div>
+            </div>
+        </div>
+        <div>
+            <p><strong>20% Investimentos</strong></p>
+            <p class="receita" id="investimentos-valor">R$ 0,00</p>
+            <div class="progress-container">
+                <div class="progress-bar progress-green" style="width: 100%"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+      <section class="card">
+        <div class="flex">
+          <h3>Últimas Transações</h3>
+          <a href="transacoes.html" class="btn btn-secondary btn-sm"
+            >Ver todas</a
+          >
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Descrição</th>
+              <th>Tipo</th>
+              <th>Valor</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-transacoes">
+            <!-- Preenchido via JavaScript -->
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h3>Meta Principal</h3>
+        <div id="lista-metas">
+          <!-- Preenchido via JavaScript -->
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>IFO - Organizador Financeiro Inteligente © 2025 | Sprint 3</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+  </body>
+</html>

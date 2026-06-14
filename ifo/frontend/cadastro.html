@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IFO - Cadastro</title>
+    <link rel="stylesheet" href="css/estilo.css" />
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-box">
+        <h1>IFO</h1>
+        <p>Crie sua conta gratuita</p>
+
+        <form id="form-cadastro">
+          <div class="form-group">
+            <label for="nome">Nome Completo</label>
+            <input
+              type="text"
+              id="nome"
+              class="form-control"
+              placeholder="Seu nome completo"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="seu@email.com"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="senha">Senha</label>
+            <input
+              type="password"
+              id="senha"
+              class="form-control"
+              placeholder="Mínimo 6 caracteres"
+              minlength="6"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="confirmar-senha">Confirmar Senha</label>
+            <input
+              type="password"
+              id="confirmar-senha"
+              class="form-control"
+              placeholder="Digite a senha novamente"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="renda">Renda Mensal (R$)</label>
+            <input
+              type="number"
+              id="renda"
+              class="form-control"
+              placeholder="0,00"
+              step="0.01"
+              min="0"
+              required
+            />
+          </div>
+
+          <div class="alert alert-info mb-3">
+            <strong>Dica:</strong> Sua renda será usada para calcular a regra
+            50/30/20 automaticamente.
+          </div>
+
+          <button type="submit" class="btn btn-success" style="width: 100%">
+            CADASTRAR
+          </button>
+        </form>
+
+        <p class="mt-3 text-center">
+          Já tem conta?
+          <a href="index.html" style="color: #2563eb">Fazer Login</a>
+        </p>
+      </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+      document
+        .getElementById("form-cadastro")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const nome = document.getElementById("nome").value;
+          const email = document.getElementById("email").value;
+          const senha = document.getElementById("senha").value;
+          const confirmarSenha =
+            document.getElementById("confirmar-senha").value;
+          const renda = parseFloat(document.getElementById("renda").value);
+
+          if (senha.length < 6) {
+            alert("A senha deve ter pelo menos 6 caracteres!");
+            return;
+          }
+
+          if (senha !== confirmarSenha) {
+            alert("As senhas não coincidem!");
+            return;
+          }
+
+          if (renda <= 0) {
+            alert("Por favor, informe sua renda mensal!");
+            return;
+          }
+
+          const usuario = await cadastrarUsuario(nome, email, senha, renda);
+
+          if (usuario) {
+            alert(`Cadastro realizado com sucesso!\n\nBem-vindo, ${nome}!`);
+            window.location.href = "index.html";
+          } else {
+            alert(
+              "Erro ao cadastrar. Tente novamente.\n\nEste email já está sendo utilizado.",
+            );
+          }
+        });
+    </script>
+  </body>
+</html>

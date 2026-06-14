@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IFO - Login</title>
+    <link rel="stylesheet" href="css/estilo.css" />
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-box">
+        <h1>IFO</h1>
+        <p>Organização Financeira Inteligente</p>
+
+        <form id="form-login">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="seu@email.com"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="senha">Senha</label>
+            <input
+              type="password"
+              id="senha"
+              class="form-control"
+              placeholder="********"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%">
+            ENTRAR
+          </button>
+        </form>
+
+        <p class="mt-3 text-center">
+          Não tem conta?
+          <a href="cadastro.html" style="color: #2563eb">Cadastre-se</a>
+        </p>
+
+        <div class="alert alert-info mt-3">
+          <strong>Demo:</strong> douglas@ifo.teste / 123456
+        </div>
+      </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+      document
+        .getElementById("form-login")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("email").value;
+          const senha = document.getElementById("senha").value;
+
+          const usuario = await loginUsuario(email, senha);
+
+          if (usuario) {
+            localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+            window.location.href = "dashboard.html";
+          } else {
+            alert("Email ou senha inválidos!");
+          }
+        });
+    </script>
+  </body>
+</html>
