@@ -34,32 +34,30 @@ Projeto acadêmico da **FATEC Cotia** — Desenvolvimento de Software Multiplata
 
 ```text
 ifo/
-├── backend/ifo-backend/   # API Spring Boot
-├── frontend/              # páginas, CSS e JavaScript
-└── database/              # scripts de apoio (dev-seed.sql)
+├── backend/ifo-backend/   # API Spring Boot (migrations em src/main/resources/db/migration)
+└── frontend/              # páginas, CSS e JavaScript
 docs/                      # escopo, requisitos, diagramas, API, roadmap
+docker-compose.yml         # PostgreSQL 15
+.env.example               # modelo das variáveis de ambiente
 ```
 
 ## Como executar
 
-Pré-requisitos: Java 17, Docker e um servidor estático simples para o frontend.
+Pré-requisitos: Java 17, Docker e um servidor estático simples para o frontend (ex.: extensão Live Server do VS Code).
 
-1. **Banco de dados**
+1. **Variáveis de ambiente**: copie `.env.example` para `.env` na raiz e troque `DB_PASSWORD` e `JWT_SECRET` (mínimo de 32 caracteres). O `.env` é lido pelo Docker Compose e pelo backend, e **nunca** deve ser versionado.
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Banco de dados**
 
    ```bash
    docker compose up -d db
    ```
 
-2. **Variáveis de ambiente** (exemplo; nunca versione valores reais)
-
-   ```bash
-   export DB_URL=jdbc:postgresql://localhost:5432/ifo_db
-   export DB_USER=ifo
-   export DB_PASSWORD=<defina-uma-senha>
-   export JWT_SECRET=<chave-com-32-ou-mais-caracteres>
-   ```
-
-3. **Backend** (porta 8081; as migrations Flyway criam as tabelas e as categorias)
+3. **Backend** (porta 8081; as migrations Flyway criam as tabelas e as categorias). Também dá para rodar pela IDE, executando `IfoBackendApplication`.
 
    ```bash
    cd ifo/backend/ifo-backend
@@ -75,14 +73,12 @@ Pré-requisitos: Java 17, Docker e um servidor estático simples para o frontend
 
    Abra `http://localhost:5500`.
 
-5. **Testes**
+5. **Testes** (por enquanto usam o PostgreSQL do Docker Compose; Testcontainers entra na Sprint R5)
 
    ```bash
    cd ifo/backend/ifo-backend
    ./mvnw test
    ```
-
-> O `docker-compose.yml` e as migrations são criados na **Sprint R1** (ver `docs/07-roadmap.md`).
 
 ## Documentação
 
