@@ -1,39 +1,35 @@
 package com.ifo.backend.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+// Tipo e grupo não são gravados: vêm da categoria (RN02)
 @Entity
 @Table(name = "transacao")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Transacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_transacao")
     private Long idTransacao;
 
-    @Column(name = "id_usuario", nullable = false)
-    private Long idUsuario;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
 
-    @Column(name = "id_conta", nullable = false)
-    private Long idConta;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_categoria", nullable = false)
+    private Categoria categoria;
 
-    @Column(nullable = false)
-    private Long idCategoria;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TipoCategoria categoriaTipo;
-
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal valor;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TipoTransacao tipo;
 
     @Column(nullable = false)
     private LocalDate data;
@@ -41,9 +37,6 @@ public class Transacao {
     @Column(length = 255)
     private String descricao;
 
-    @Column(name = "data_vencimento")
-    private LocalDate dataVencimento;
-
-    @Column(nullable = false)
-    private Boolean paga = false;
+    @Column(name = "criado_em", nullable = false, updatable = false)
+    private LocalDateTime criadoEm = LocalDateTime.now();
 }

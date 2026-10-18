@@ -1,44 +1,52 @@
 package com.ifo.backend.service;
 
+import com.ifo.backend.dto.TransacaoRequest;
+import com.ifo.backend.dto.TransacaoResponse;
+import com.ifo.backend.exception.RecursoNaoEncontradoException;
 import com.ifo.backend.model.Transacao;
-import com.ifo.backend.model.TipoTransacao;
 import com.ifo.backend.repository.TransacaoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ifo.backend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
-import java.math.BigDecimal;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
+// Toda operação filtra pelo usuário do token (RN11)
 @Service
 public class TransacaoService {
 
-    @Autowired
-    private TransacaoRepository repository;
+    private final TransacaoRepository repository;
+    private final UsuarioRepository usuarioRepository;
+    private final CategoriaService categoriaService;
 
-    public List<Transacao> buscarPorUsuario(Long idUsuario) {
-        return repository.findByIdUsuario(idUsuario);
+    public TransacaoService(TransacaoRepository repository, UsuarioRepository usuarioRepository,
+                            CategoriaService categoriaService) {
+        this.repository = repository;
+        this.usuarioRepository = usuarioRepository;
+        this.categoriaService = categoriaService;
     }
 
-    public Transacao salvar(Transacao transacao) {
-        return repository.save(transacao);
+    @Transactional(readOnly = true)
+    public List<TransacaoResponse> listar(Long idUsuario) {
+        return repository.findByUsuarioIdUsuarioOrderByDataDescIdTransacaoDesc(idUsuario).stream()
+                .map(TransacaoResponse::from)
+                .toList();
     }
 
-    public BigDecimal calcularSaldo(Long idUsuario) {
-        List<Transacao> transacoes = repository.findByIdUsuario(idUsuario);
-
-        BigDecimal receitas = transacoes.stream()
-                .filter(t -> t.getTipo() == TipoTransacao.RECEITA)
-                .map(Transacao::getValor)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        BigDecimal despesas = transacoes.stream()
-                .filter(t -> t.getTipo() == TipoTransacao.DESPESA)
-                .map(Transacao::getValor)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        return receitas.subtract(despesas);
+    @Transactional
+    public TransacaoResponse criar(Long idUsuario, TransacaoRequest request) {
+        Transacao transacao = new Transacao();
+        transacao.setUsuario(usuarioRepository.getReferenceById(idUsuario));
+        transacao.setCategoria(categoriaService.buscarEntidade(request.idCategoria()));
+        transacao.setValor(request.valor());
+        transacao.setData(request.data());
+        transacao.setDescricao(request.descricao());
+        return TransacaoResponse.from(repository.save(transacao));
     }
 
-    public void deletar(Long id) {
-        repository.deleteById(id);
+    @Transactional
+    public void excluir(Long idUsuario, Long idTransacao) {
+        Transacao transacao = repository.findByIdTransacaoAndUsuarioIdUsuario(idTransacao, idUsuario)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Transação não encontrada."));
+        repository.delete(transacao);
     }
 }

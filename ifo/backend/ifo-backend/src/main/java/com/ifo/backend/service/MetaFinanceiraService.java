@@ -1,36 +1,47 @@
 package com.ifo.backend.service;
 
+import com.ifo.backend.dto.MetaRequest;
+import com.ifo.backend.dto.MetaResponse;
+import com.ifo.backend.exception.RecursoNaoEncontradoException;
 import com.ifo.backend.model.MetaFinanceira;
 import com.ifo.backend.repository.MetaFinanceiraRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ifo.backend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
-import java.math.BigDecimal;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
 public class MetaFinanceiraService {
 
-    @Autowired
-    private MetaFinanceiraRepository repository;
+    private final MetaFinanceiraRepository repository;
+    private final UsuarioRepository usuarioRepository;
 
-    public List<MetaFinanceira> buscarPorUsuario(Long idUsuario) {
-        return repository.findByIdUsuario(idUsuario);
+    public MetaFinanceiraService(MetaFinanceiraRepository repository, UsuarioRepository usuarioRepository) {
+        this.repository = repository;
+        this.usuarioRepository = usuarioRepository;
     }
 
-    public MetaFinanceira salvar(MetaFinanceira meta) {
-        return repository.save(meta);
+    @Transactional(readOnly = true)
+    public List<MetaResponse> listar(Long idUsuario) {
+        return repository.findByUsuarioIdUsuarioOrderByIdMetaAsc(idUsuario).stream()
+                .map(MetaResponse::from)
+                .toList();
     }
 
-    public MetaFinanceira atualizarValor(Long id, BigDecimal novoValor) {
-        MetaFinanceira meta = repository.findById(id).orElseThrow();
-        meta.setValorAtual(novoValor);
-        return repository.save(meta);
+    @Transactional
+    public MetaResponse criar(Long idUsuario, MetaRequest request) {
+        MetaFinanceira meta = new MetaFinanceira();
+        meta.setUsuario(usuarioRepository.getReferenceById(idUsuario));
+        meta.setTituloMeta(request.tituloMeta().trim());
+        meta.setValorObjetivo(request.valorObjetivo());
+        meta.setPrazo(request.prazo());
+        return MetaResponse.from(repository.save(meta));
     }
 
-    public void excluir(Long id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Meta não encontrada");
-        }
-        repository.deleteById(id);
+    @Transactional
+    public void excluir(Long idUsuario, Long idMeta) {
+        MetaFinanceira meta = repository.findByIdMetaAndUsuarioIdUsuario(idMeta, idUsuario)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Meta não encontrada."));
+        repository.delete(meta);
     }
 }
