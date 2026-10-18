@@ -1,6 +1,6 @@
 # 05 · Diagramas
 
-Todos os diagramas estão em **Mermaid** (renderizam direto no GitHub e no VS Code com extensão). O usuário de exemplo é **João**. Eles substituem os diagramas da V1 e refletem o escopo da V2 (sem Conta/Carteira, sem persistência de investimento).
+Todos os diagramas estão em **Mermaid** (renderizam direto no GitHub e no VS Code com extensão). O usuário de exemplo é **João**. Eles substituem os diagramas da V1 e refletem o escopo da V1 revisada (sem Conta/Carteira, sem persistência de investimento).
 
 ## 1. Diagrama de casos de uso
 

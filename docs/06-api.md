@@ -1,4 +1,4 @@
-# 06 · Contrato da API (alvo V2)
+# 06 · Contrato da API (alvo da V1 revisada)
 
 Base: `http://localhost:8081/api` · Formato: JSON · Autenticação: `Authorization: Bearer <token>` (exceto `/auth/*`).
 

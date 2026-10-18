@@ -85,4 +85,4 @@ Resultado da leitura do repositório `jmarcosvm/IFO-Organizador-Financeiro` (com
 | `TransacaoReceita` e `TransacaoDespesa` no diagrama de classes | Uma entidade `Transacao` só | Diagrama novo usa `Transacao` única |
 | Usuário "Douglas" nos diagramas | — | Trocado por "João" |
 | Referência "FAWLER, Martin" | — | Corrigir para **FOWLER** |
-| Resultado "totalmente funcional" e "atende a todos os requisitos" | Vários requisitos parciais | Reescrever resultados após a V2 |
+| Resultado "totalmente funcional" e "atende a todos os requisitos" | Vários requisitos parciais | Reescrever resultados após a revisão da V1 |

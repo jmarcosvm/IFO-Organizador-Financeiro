@@ -1,6 +1,6 @@
 # 01 · Escopo do Projeto
 
-**Projeto:** IFO — Organizador Financeiro Inteligente (versão 2, "IFO V1 → refatoração")
+**Projeto:** IFO — Organizador Financeiro Inteligente (V1 revisada: correção e refatoração da V1)
 **Equipe:** João Marcos Vilaça Marques, Amanda Freitas de Lima, Lucas de Souza Saldanha dos Santos, Vinicius de Amorim Farias
 **Instituição:** FATEC Cotia — Desenvolvimento de Software Multiplataforma (Engenharia de Software II)
 
@@ -27,7 +27,7 @@ O IFO é uma aplicação web que ajuda pessoas a controlar as finanças pessoais
 5. Entregar interface **responsiva (mobile-first)** com design renovado.
 6. Manter a documentação (UML, BPMN, requisitos) sincronizada com o código.
 
-## 3. Dentro do escopo (V2 atual)
+## 3. Dentro do escopo (V1 revisada)
 
 | # | Funcionalidade | Resumo |
 |---|---|---|
@@ -88,6 +88,6 @@ Em **18/10/2026** a equipe aprovou a inclusão de **despesas recorrentes**, **ex
 | Risco | Impacto | Mitigação |
 |---|---|---|
 | Divergência código × documentação (como na V1) | Alto | Diagramas em Mermaid dentro do repo, revisados no Definition of Done |
-| Escopo crescer (V2 invadir a V1) | Médio | Lista "fora do escopo" + ADRs |
+| Escopo crescer (itens do IFO V2 invadirem a V1 revisada) | Médio | Lista "fora do escopo" + ADRs |
 | Tempo curto | Médio | Priorização MoSCoW e sprints curtas |
 | Problemas de ambiente (Docker/CORS) | Baixo | `docker-compose` + variáveis de ambiente documentadas |

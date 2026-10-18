@@ -4,7 +4,7 @@ Aplicação web para **controle financeiro pessoal**: registre receitas e despes
 
 Projeto acadêmico da **FATEC Cotia** — Desenvolvimento de Software Multiplataforma (Engenharia de Software II).
 
-> **Status:** em refatoração (V2). A documentação em [`docs/`](docs/) descreve o alvo; veja o roadmap para o andamento.
+> **Status:** em revisão (IFO V1 revisada). A documentação em [`docs/`](docs/) descreve o alvo; veja o roadmap para o andamento.
 
 ## Funcionalidades
 
