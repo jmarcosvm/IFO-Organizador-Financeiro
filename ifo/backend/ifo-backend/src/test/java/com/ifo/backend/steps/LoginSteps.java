@@ -1,71 +1,76 @@
 package com.ifo.backend.steps;
 
-import com.ifo.backend.model.Usuario;
-import com.ifo.backend.repository.UsuarioRepository;
+import com.ifo.backend.dto.AuthResponse;
+import com.ifo.backend.dto.CadastroRequest;
+import com.ifo.backend.dto.LoginRequest;
+import com.ifo.backend.exception.CredenciaisInvalidasException;
+import com.ifo.backend.security.JwtService;
+import com.ifo.backend.service.AuthService;
 import io.cucumber.java.pt.Dado;
-import io.cucumber.java.pt.Quando;
 import io.cucumber.java.pt.Entao;
+import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+// Chama o AuthService de verdade (BCrypt + JWT), nada de senha fixa
 public class LoginSteps {
 
     @Autowired
-    private UsuarioRepository repository;
+    private AuthService authService;
 
-    private Usuario usuario;
-    private boolean loginSucesso;
+    @Autowired
+    private JwtService jwtService;
+
+    private String email;
+    private AuthResponse resposta;
     private String mensagemErro;
 
-    @Dado("que o usuário {string} existe no sistema")
-    public void usuario_existe(String email) {
-        usuario = repository.findByEmail(email).orElse(null);
-        assertNotNull(usuario, "Usuário não encontrado: " + email);
+    @Dado("que existe um usuário cadastrado com a senha {string}")
+    public void usuario_cadastrado(String senha) {
+        email = "login-" + UUID.randomUUID() + "@ifo.teste";
+        authService.cadastrar(new CadastroRequest("Usuário Teste", email, senha, BigDecimal.valueOf(1500)));
     }
 
     @Quando("ele faz login com a senha {string}")
     public void fazer_login(String senha) {
-        // Simulação de login (senha hardcoded para teste)
-        loginSucesso = (usuario != null && "123456".equals(senha));
+        tentarLogin(email, senha);
+    }
+
+    @Quando("alguém tenta login com email {string} e senha {string}")
+    public void tentar_login(String emailInformado, String senha) {
+        tentarLogin(emailInformado, senha);
     }
 
     @Entao("o login deve ser realizado com sucesso")
     public void login_sucesso() {
-        assertTrue(loginSucesso, "Login falhou");
+        assertNull(mensagemErro, "Login falhou: " + mensagemErro);
+        assertEquals(email, resposta.usuario().email());
     }
 
-    @Entao("o sistema deve redirecionar para o dashboard")
-    public void redirecionar_dashboard() {
-        assertTrue(loginSucesso, "Deveria redirecionar para dashboard");
-    }
-
-    @Dado("que o usuário está na tela de login")
-    public void usuario_tela_login() {
-        // Pré-condição
-    }
-
-    @Quando("ele tenta login com email {string} e senha {string}")
-    public void tentar_login_invalido(String email, String senha) {
-        usuario = repository.findByEmail(email).orElse(null);
-        loginSucesso = (usuario != null && "123456".equals(senha));
-
-        if (!loginSucesso) {
-            mensagemErro = "Email ou senha inválidos";
-        }
+    @Entao("ele deve receber um token de acesso válido")
+    public void token_valido() {
+        assertEquals(resposta.usuario().idUsuario(), jwtService.extrairIdUsuario(resposta.token()).orElseThrow());
     }
 
     @Entao("o sistema deve retornar erro de autenticação")
     public void erro_autenticacao() {
-        assertFalse(loginSucesso, "Login deveria falhar");
+        assertNull(resposta, "Login deveria falhar");
+        assertNotNull(mensagemErro);
     }
 
     @Entao("a mensagem deve ser {string}")
     public void mensagem_erro(String mensagem) {
-        assertEquals(mensagem, mensagemErro, "Mensagem de erro incorreta");
+        assertEquals(mensagem, mensagemErro);
+    }
+
+    private void tentarLogin(String emailInformado, String senha) {
+        try {
+            resposta = authService.login(new LoginRequest(emailInformado, senha));
+        } catch (CredenciaisInvalidasException e) {
+            mensagemErro = e.getMessage();
+        }
     }
 }

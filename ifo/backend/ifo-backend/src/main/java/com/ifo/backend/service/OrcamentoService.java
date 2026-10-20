@@ -1,29 +1,28 @@
 package com.ifo.backend.service;
 
-import com.ifo.backend.model.OrcamentoMensal;
+import com.ifo.backend.dto.OrcamentoResponse;
+import com.ifo.backend.model.Orcamento;
 import com.ifo.backend.repository.OrcamentoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
 public class OrcamentoService {
 
-    @Autowired
-    private OrcamentoRepository repository;
+    private final OrcamentoRepository repository;
 
-    public List<OrcamentoMensal> buscarPorUsuario(Long idUsuario) {
-        return repository.findByIdUsuario(idUsuario);
+    public OrcamentoService(OrcamentoRepository repository) {
+        this.repository = repository;
     }
 
-    public OrcamentoMensal salvar(OrcamentoMensal orcamento) {
-        return repository.save(orcamento);
-    }
-
-    public void excluir(Long id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Orçamento não encontrado");
-        }
-        repository.deleteById(id);
+    // Ordem fixa: Necessidades, Lazer, Investimentos
+    @Transactional(readOnly = true)
+    public List<OrcamentoResponse> listar(Long idUsuario) {
+        return repository.findByUsuarioIdUsuario(idUsuario).stream()
+                .sorted(Comparator.comparing(Orcamento::getGrupo))
+                .map(OrcamentoResponse::from)
+                .toList();
     }
 }

@@ -4,22 +4,30 @@ Funcionalidade: Gestão de Transações Financeiras
   Quero gerenciar minhas transações
   Para controlar minhas finanças pessoais
 
-  @unidade
-  Cenário: Criar transação de receita com sucesso
-    Dado que o sistema está pronto para receber transações
-    Quando eu crio uma transação do tipo "RECEITA" com valor 1500.00
-    Então a transação deve ser salva com sucesso
-    E o valor deve ser positivo
+  Contexto:
+    Dado que estou autenticado como um novo usuário
 
-  @unidade
-  Cenário: Criar transação de despesa com sucesso
-    Dado que o sistema está pronto para receber transações
-    Quando eu crio uma transação do tipo "DESPESA" com valor 200.00
+  @integracao
+  Cenário: Criar transação de receita com sucesso
+    Quando eu lanço 1500.00 na categoria "Salário"
     Então a transação deve ser salva com sucesso
-    E o valor deve ser negativo no cálculo do saldo
+    E o tipo derivado da categoria deve ser "RECEITA" sem grupo
+
+  @integracao
+  Cenário: Criar transação de despesa com sucesso
+    Quando eu lanço 55.90 na categoria "Delivery"
+    Então a transação deve ser salva com sucesso
+    E o tipo derivado da categoria deve ser "DESPESA" no grupo "LAZER"
+
+  @integracao
+  Cenário: Outro usuário não consegue excluir minha transação
+    Dado que eu lancei 100.00 na categoria "Delivery"
+    Quando outro usuário tenta excluir essa transação
+    Então a exclusão deve ser negada com a mensagem "Transação não encontrada."
 
   @desempenho
   Cenário: Sistema deve responder rapidamente ao listar transações
-    Dado que existem 100 transações no banco
+    Dado que eu tenho 100 transações lançadas
     Quando eu solicito a lista de transações
-    Então o tempo de resposta deve ser menor que 2 segundos
+    Então devo receber 100 transações
+    E o tempo de resposta deve ser menor que 2 segundos

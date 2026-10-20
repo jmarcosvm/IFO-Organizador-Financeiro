@@ -18,15 +18,15 @@ A V1 teve as Sprints 0–4. A refatoração continua a numeração com o prefixo
 ## 2. Backlog detalhado
 
 ### R1 — Fundação
-- [ ] Criar `docker-compose.yml` com PostgreSQL 15 (credenciais por `.env`).
-- [ ] Adicionar Flyway; criar `V1__criar_esquema.sql` e `V2__categorias_fixas.sql` (ver `04-modelo-de-dados.md`; inclui a tabela `transacao_recorrente`).
-- [ ] Trocar `ddl-auto=none` por `validate`; mover segredos para variáveis de ambiente.
-- [ ] Reescrever entidades: `Usuario` (senhaHash), `Categoria` (nome, tipo, grupo), `Transacao` (ManyToOne), `Orcamento`, `MetaFinanceira`.
-- [ ] Remover: `ContaCarteira`, `Investimento` (entidade/repo/service/controller), `TipoConta`, `TipoOrcamento`, enum antigo `TipoCategoria`.
-- [ ] Spring Security + filtro JWT + BCrypt; `AuthController` (`/auth/cadastro`, `/auth/login`).
-- [ ] DTOs de entrada/saída; nenhuma entidade na resposta.
-- [ ] `@RestControllerAdvice` com formato de erro padrão (`06-api.md` §8).
-- [ ] CORS restrito à origem do frontend.
+- [x] Criar `docker-compose.yml` com PostgreSQL 15 (credenciais por `.env`).
+- [x] Adicionar Flyway; criar `V1__criar_esquema.sql` e `V2__categorias_fixas.sql` (ver `04-modelo-de-dados.md`; inclui a tabela `transacao_recorrente`).
+- [x] Trocar `ddl-auto=none` por `validate`; mover segredos para variáveis de ambiente.
+- [x] Reescrever entidades: `Usuario` (senhaHash), `Categoria` (nome, tipo, grupo), `Transacao` (ManyToOne), `Orcamento`, `MetaFinanceira`.
+- [x] Remover: `ContaCarteira`, `Investimento` (entidade/repo/service/controller), `TipoConta`, `TipoOrcamento`, enum antigo `TipoCategoria`.
+- [x] Spring Security + filtro JWT + BCrypt; `AuthController` (`/auth/cadastro`, `/auth/login`).
+- [x] DTOs de entrada/saída; nenhuma entidade na resposta.
+- [x] `@RestControllerAdvice` com formato de erro padrão (`06-api.md` §8).
+- [x] CORS restrito à origem do frontend.
 
 ### R2 — Núcleo financeiro
 - [ ] `GET /categorias`.

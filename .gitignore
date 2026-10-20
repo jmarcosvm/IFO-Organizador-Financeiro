@@ -1,2 +1,10 @@
 CLAUDE.md
 CLAUDE.local.md
+
+# Segredos locais (use .env.example como modelo)
+.env
+
+# IDEs
+.idea/
+.vscode/
+*.iml

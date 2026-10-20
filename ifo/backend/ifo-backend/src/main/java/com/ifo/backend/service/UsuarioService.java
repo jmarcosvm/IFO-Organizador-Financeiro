@@ -1,30 +1,37 @@
 package com.ifo.backend.service;
 
+import com.ifo.backend.dto.AtualizarUsuarioRequest;
+import com.ifo.backend.dto.UsuarioResponse;
+import com.ifo.backend.exception.RecursoNaoEncontradoException;
 import com.ifo.backend.model.Usuario;
 import com.ifo.backend.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UsuarioService {
 
-    @Autowired
-    private UsuarioRepository repository;
+    private final UsuarioRepository repository;
 
-    public Usuario salvar(Usuario usuario) {
-        return repository.save(usuario);
+    public UsuarioService(UsuarioRepository repository) {
+        this.repository = repository;
     }
 
-    public Optional<Usuario> buscarPorEmail(String email) {
-        return repository.findByEmail(email);
+    @Transactional(readOnly = true)
+    public UsuarioResponse buscar(Long idUsuario) {
+        return UsuarioResponse.from(buscarEntidade(idUsuario));
     }
 
-    public Usuario login(String email, String senha) {
-        Optional<Usuario> usuario = repository.findByEmail(email);
-        if (usuario.isPresent() && usuario.get().getSenha().equals(senha)) {
-            return usuario.get();
-        }
-        return null;
+    @Transactional
+    public UsuarioResponse atualizar(Long idUsuario, AtualizarUsuarioRequest request) {
+        Usuario usuario = buscarEntidade(idUsuario);
+        usuario.setNome(request.nome().trim());
+        usuario.setRendaMensal(request.rendaMensal());
+        return UsuarioResponse.from(usuario);
+    }
+
+    private Usuario buscarEntidade(Long idUsuario) {
+        return repository.findById(idUsuario)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado."));
     }
 }

@@ -6,14 +6,20 @@ Funcionalidade: Autenticação de Usuários
 
   @integracao
   Cenário: Login com credenciais válidas
-    Dado que o usuário "douglas@ifo.teste" existe no sistema
-    Quando ele faz login com a senha "123456"
+    Dado que existe um usuário cadastrado com a senha "senhaSegura123"
+    Quando ele faz login com a senha "senhaSegura123"
     Então o login deve ser realizado com sucesso
-    E o sistema deve redirecionar para o dashboard
+    E ele deve receber um token de acesso válido
 
   @integracao
-  Cenário: Login com credenciais inválidas
-    Dado que o usuário está na tela de login
-    Quando ele tenta login com email "errado@teste.com" e senha "errada"
+  Cenário: Login com senha incorreta
+    Dado que existe um usuário cadastrado com a senha "senhaSegura123"
+    Quando ele faz login com a senha "senhaErrada"
     Então o sistema deve retornar erro de autenticação
-    E a mensagem deve ser "Email ou senha inválidos"
+    E a mensagem deve ser "E-mail ou senha inválidos."
+
+  @integracao
+  Cenário: Login com e-mail inexistente
+    Quando alguém tenta login com email "naoexiste@ifo.teste" e senha "qualquer123"
+    Então o sistema deve retornar erro de autenticação
+    E a mensagem deve ser "E-mail ou senha inválidos."

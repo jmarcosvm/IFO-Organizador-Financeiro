@@ -1,30 +1,34 @@
 package com.ifo.backend.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "meta_financeira")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class MetaFinanceira {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_meta")
     private Long idMeta;
 
-    @Column(name = "id_usuario", nullable = false)
-    private Long idUsuario;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
 
     @Column(name = "titulo_meta", nullable = false, length = 100)
     private String tituloMeta;
 
-    @Column(name = "valor_objetivo", nullable = false, precision = 10, scale = 2)
+    @Column(name = "valor_objetivo", nullable = false, precision = 12, scale = 2)
     private BigDecimal valorObjetivo;
 
-    @Column(name = "valor_atual", precision = 10, scale = 2)
+    @Column(name = "valor_atual", nullable = false, precision = 12, scale = 2)
     private BigDecimal valorAtual = BigDecimal.ZERO;
 
     private LocalDate prazo;
