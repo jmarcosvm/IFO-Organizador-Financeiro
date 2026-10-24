@@ -1,6 +1,7 @@
 package com.ifo.backend.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "categoria")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Categoria {
     @Id
     @Column(name = "id_categoria")

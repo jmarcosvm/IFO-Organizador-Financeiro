@@ -29,11 +29,11 @@ A V1 teve as Sprints 0–4. A refatoração continua a numeração com o prefixo
 - [x] CORS restrito à origem do frontend.
 
 ### R2 — Núcleo financeiro
-- [ ] `GET /categorias`.
-- [ ] `TransacaoService`: criar/atualizar/excluir/listar por mês, sempre filtrando pelo usuário do token.
-- [ ] Derivar tipo e grupo da categoria (RN02); validar valor > 0.
-- [ ] `GET /resumo` (receitas, despesas, saldo, despesas por grupo).
-- [ ] Testes unitários do saldo e do resumo.
+- [x] `GET /categorias`.
+- [x] `TransacaoService`: criar/atualizar/excluir/listar por mês, sempre filtrando pelo usuário do token.
+- [x] Derivar tipo e grupo da categoria (RN02); validar valor > 0.
+- [x] `GET /resumo` (receitas, despesas, saldo, despesas por grupo).
+- [x] Testes unitários do saldo e do resumo.
 
 ### R3 — Orçamento, metas, calculadora e recorrências
 - [ ] Criar orçamento padrão 50/30/20 no cadastro.
