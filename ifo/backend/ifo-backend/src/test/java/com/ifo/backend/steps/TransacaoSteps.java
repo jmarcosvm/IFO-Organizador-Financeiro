@@ -14,6 +14,7 @@ import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,7 +45,22 @@ public class TransacaoSteps {
     @Quando("eu lanço {double} na categoria {string}")
     @Dado("que eu lancei {double} na categoria {string}")
     public void lancar(double valor, String nomeCategoria) {
-        transacaoCriada = transacaoService.criar(idUsuario, novaTransacao(valor, nomeCategoria));
+        transacaoCriada = transacaoService.criar(idUsuario, novaTransacao(valor, nomeCategoria, LocalDate.now()));
+    }
+
+    @Dado("que eu lancei {double} na categoria {string} em {string}")
+    public void lancar_em(double valor, String nomeCategoria, String data) {
+        transacaoService.criar(idUsuario, novaTransacao(valor, nomeCategoria, LocalDate.parse(data)));
+    }
+
+    @Quando("eu listo as transações de {int}\\/{int}")
+    public void listar_mes(int mes, int ano) {
+        lista = transacaoService.listar(idUsuario, YearMonth.of(ano, mes));
+    }
+
+    @Entao("todas devem ser de {int}\\/{int}")
+    public void todas_do_mes(int mes, int ano) {
+        assertTrue(lista.stream().allMatch(t -> YearMonth.from(t.data()).equals(YearMonth.of(ano, mes))));
     }
 
     @Entao("a transação deve ser salva com sucesso")
@@ -78,20 +94,20 @@ public class TransacaoSteps {
     @Entao("a exclusão deve ser negada com a mensagem {string}")
     public void exclusao_negada(String mensagem) {
         assertEquals(mensagem, mensagemErro);
-        assertEquals(1, transacaoService.listar(idUsuario).size(), "A transação não deveria ter sido apagada");
+        assertEquals(1, transacaoService.listar(idUsuario, YearMonth.now()).size(), "A transação não deveria ter sido apagada");
     }
 
     @Dado("que eu tenho {int} transações lançadas")
     public void tenho_transacoes(int quantidade) {
         for (int i = 0; i < quantidade; i++) {
-            transacaoService.criar(idUsuario, novaTransacao(100, "Alimentação"));
+            transacaoService.criar(idUsuario, novaTransacao(100, "Alimentação", LocalDate.now()));
         }
     }
 
     @Quando("eu solicito a lista de transações")
     public void solicitar_lista() {
         long inicio = System.currentTimeMillis();
-        lista = transacaoService.listar(idUsuario);
+        lista = transacaoService.listar(idUsuario, YearMonth.now());
         tempoDecorrido = System.currentTimeMillis() - inicio;
     }
 
@@ -112,12 +128,12 @@ public class TransacaoSteps {
                 .usuario().idUsuario();
     }
 
-    private TransacaoRequest novaTransacao(double valor, String nomeCategoria) {
+    private TransacaoRequest novaTransacao(double valor, String nomeCategoria, LocalDate data) {
         Short idCategoria = categoriaService.listar().stream()
                 .filter(c -> c.nome().equals(nomeCategoria))
                 .map(CategoriaResponse::idCategoria)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Categoria inexistente: " + nomeCategoria));
-        return new TransacaoRequest(idCategoria, BigDecimal.valueOf(valor), LocalDate.now(), "Transação de teste Cucumber");
+        return new TransacaoRequest(idCategoria, BigDecimal.valueOf(valor), data, "Transação de teste Cucumber");
     }
 }

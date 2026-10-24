@@ -25,6 +25,15 @@ Funcionalidade: Gestão de Transações Financeiras
     Quando outro usuário tenta excluir essa transação
     Então a exclusão deve ser negada com a mensagem "Transação não encontrada."
 
+  @integracao
+  Cenário: Filtrar transações por mês
+    Dado que eu lancei 1500.00 na categoria "Salário" em "2026-09-05"
+    E que eu lancei 55.90 na categoria "Delivery" em "2026-09-30"
+    E que eu lancei 99.90 na categoria "Contas fixas" em "2026-10-01"
+    Quando eu listo as transações de 9/2026
+    Então devo receber 2 transações
+    E todas devem ser de 9/2026
+
   @desempenho
   Cenário: Sistema deve responder rapidamente ao listar transações
     Dado que eu tenho 100 transações lançadas

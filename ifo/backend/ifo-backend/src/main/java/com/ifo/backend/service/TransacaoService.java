@@ -8,6 +8,7 @@ import com.ifo.backend.repository.TransacaoRepository;
 import com.ifo.backend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.time.YearMonth;
 import java.util.List;
 
 // Toda operação filtra pelo usuário do token (RN11)
@@ -26,8 +27,9 @@ public class TransacaoService {
     }
 
     @Transactional(readOnly = true)
-    public List<TransacaoResponse> listar(Long idUsuario) {
-        return repository.findByUsuarioIdUsuarioOrderByDataDescIdTransacaoDesc(idUsuario).stream()
+    public List<TransacaoResponse> listar(Long idUsuario, YearMonth mes) {
+        return repository.findByUsuarioIdUsuarioAndDataBetweenOrderByDataDescIdTransacaoDesc(
+                        idUsuario, mes.atDay(1), mes.atEndOfMonth()).stream()
                 .map(TransacaoResponse::from)
                 .toList();
     }
