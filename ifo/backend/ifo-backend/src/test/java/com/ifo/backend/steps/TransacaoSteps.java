@@ -33,6 +33,7 @@ public class TransacaoSteps {
 
     private Long idUsuario;
     private TransacaoResponse transacaoCriada;
+    private TransacaoResponse transacaoEditada;
     private List<TransacaoResponse> lista;
     private String mensagemErro;
     private long tempoDecorrido;
@@ -95,6 +96,45 @@ public class TransacaoSteps {
     public void exclusao_negada(String mensagem) {
         assertEquals(mensagem, mensagemErro);
         assertEquals(1, transacaoService.listar(idUsuario, YearMonth.now()).size(), "A transação não deveria ter sido apagada");
+    }
+
+    @Quando("eu edito essa transação para {double} na categoria {string}")
+    public void editar(double valor, String nomeCategoria) {
+        transacaoEditada = transacaoService.atualizar(idUsuario, transacaoCriada.idTransacao(),
+                novaTransacao(valor, nomeCategoria, LocalDate.now()));
+    }
+
+    @Entao("a transação deve manter o mesmo id")
+    public void mesmo_id() {
+        assertEquals(transacaoCriada.idTransacao(), transacaoEditada.idTransacao());
+    }
+
+    @Quando("outro usuário tenta editar essa transação para {double} na categoria {string}")
+    public void outro_usuario_edita(double valor, String nomeCategoria) {
+        Long outroUsuario = cadastrarUsuario();
+        try {
+            transacaoService.atualizar(outroUsuario, transacaoCriada.idTransacao(),
+                    novaTransacao(valor, nomeCategoria, LocalDate.now()));
+        } catch (RecursoNaoEncontradoException e) {
+            mensagemErro = e.getMessage();
+        }
+    }
+
+    @Entao("a edição deve ser negada com a mensagem {string}")
+    public void edicao_negada(String mensagem) {
+        assertEquals(mensagem, mensagemErro);
+    }
+
+    // Confere no banco (pela listagem), não só no objeto devolvido
+    @Entao("ela deve estar com valor {double} na categoria {string} no grupo {string}")
+    public void conferir_no_banco(double valor, String nomeCategoria, String grupo) {
+        TransacaoResponse salva = transacaoService.listar(idUsuario, YearMonth.now()).stream()
+                .filter(t -> t.idTransacao().equals(transacaoCriada.idTransacao()))
+                .findFirst()
+                .orElseThrow();
+        assertEquals(0, salva.valor().compareTo(BigDecimal.valueOf(valor)));
+        assertEquals(nomeCategoria, salva.categoria().nome());
+        assertEquals(grupo, salva.categoria().grupo().name());
     }
 
     @Dado("que eu tenho {int} transações lançadas")

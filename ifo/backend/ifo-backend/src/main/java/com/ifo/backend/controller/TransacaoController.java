@@ -35,6 +35,12 @@ public class TransacaoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criar(idUsuario, request));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<TransacaoResponse> atualizar(@AuthenticationPrincipal Long idUsuario, @PathVariable Long id,
+                                                       @Valid @RequestBody TransacaoRequest request) {
+        return ResponseEntity.ok(service.atualizar(idUsuario, id, request));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@AuthenticationPrincipal Long idUsuario, @PathVariable Long id) {
         service.excluir(idUsuario, id);

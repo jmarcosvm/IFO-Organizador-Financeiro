@@ -45,10 +45,25 @@ public class TransacaoService {
         return TransacaoResponse.from(repository.save(transacao));
     }
 
+    // Edita no lugar, mantendo o mesmo id (na V1 era "apagar e recriar")
+    @Transactional
+    public TransacaoResponse atualizar(Long idUsuario, Long idTransacao, TransacaoRequest request) {
+        Transacao transacao = buscarDoUsuario(idUsuario, idTransacao);
+        transacao.setCategoria(categoriaService.buscarEntidade(request.idCategoria()));
+        transacao.setValor(request.valor());
+        transacao.setData(request.data());
+        transacao.setDescricao(request.descricao());
+        return TransacaoResponse.from(transacao);
+    }
+
     @Transactional
     public void excluir(Long idUsuario, Long idTransacao) {
-        Transacao transacao = repository.findByIdTransacaoAndUsuarioIdUsuario(idTransacao, idUsuario)
+        repository.delete(buscarDoUsuario(idUsuario, idTransacao));
+    }
+
+    // Transação de outro usuário responde igual a inexistente (404)
+    private Transacao buscarDoUsuario(Long idUsuario, Long idTransacao) {
+        return repository.findByIdTransacaoAndUsuarioIdUsuario(idTransacao, idUsuario)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Transação não encontrada."));
-        repository.delete(transacao);
     }
 }
