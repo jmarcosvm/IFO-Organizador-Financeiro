@@ -1,5 +1,6 @@
 package com.ifo.backend.controller;
 
+import com.ifo.backend.dto.TransacaoComAlertaResponse;
 import com.ifo.backend.dto.TransacaoRequest;
 import com.ifo.backend.dto.TransacaoResponse;
 import com.ifo.backend.service.MesReferencia;
@@ -30,14 +31,14 @@ public class TransacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<TransacaoResponse> criar(@AuthenticationPrincipal Long idUsuario,
-                                                   @Valid @RequestBody TransacaoRequest request) {
+    public ResponseEntity<TransacaoComAlertaResponse> criar(@AuthenticationPrincipal Long idUsuario,
+                                                          @Valid @RequestBody TransacaoRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criar(idUsuario, request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TransacaoResponse> atualizar(@AuthenticationPrincipal Long idUsuario, @PathVariable Long id,
-                                                       @Valid @RequestBody TransacaoRequest request) {
+    public ResponseEntity<TransacaoComAlertaResponse> atualizar(@AuthenticationPrincipal Long idUsuario, @PathVariable Long id,
+                                                                  @Valid @RequestBody TransacaoRequest request) {
         return ResponseEntity.ok(service.atualizar(idUsuario, id, request));
     }
 
