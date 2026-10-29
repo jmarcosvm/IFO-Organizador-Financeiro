@@ -25,13 +25,15 @@ class AuthServiceTest {
     private UsuarioRepository repository;
     private PasswordEncoder passwordEncoder;
     private AuthService authService;
+    private OrcamentoService orcamentoService;
 
     @BeforeEach
     void setUp() {
         repository = mock(UsuarioRepository.class);
         passwordEncoder = new BCryptPasswordEncoder(4); // custo baixo só para o teste ficar rápido
         JwtService jwtService = new JwtService("chave-de-teste-com-mais-de-32-caracteres-123", 60);
-        authService = new AuthService(repository, passwordEncoder, jwtService);
+        orcamentoService = mock(OrcamentoService.class);
+        authService = new AuthService(repository, passwordEncoder, jwtService, orcamentoService);
 
         when(repository.save(any(Usuario.class))).thenAnswer(invocacao -> {
             Usuario usuario = invocacao.getArgument(0);
@@ -55,12 +57,20 @@ class AuthServiceTest {
     }
 
     @Test
+    void cadastroCriaOrcamentoPadraoParaOUsuarioNovo() {
+        authService.cadastrar(new CadastroRequest("João", "joao@ifo.teste", "senhaSegura123", BigDecimal.TEN));
+
+        verify(orcamentoService).criarPadrao(any(Usuario.class));
+    }
+
+    @Test
     void cadastroComEmailExistenteFalha() {
         when(repository.existsByEmail("joao@ifo.teste")).thenReturn(true);
 
         assertThrows(EmailJaCadastradoException.class, () -> authService.cadastrar(
                 new CadastroRequest("João", "joao@ifo.teste", "senhaSegura123", BigDecimal.TEN)));
         verify(repository, never()).save(any());
+        verifyNoInteractions(orcamentoService);
     }
 
     @Test
