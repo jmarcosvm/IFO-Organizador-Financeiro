@@ -57,6 +57,8 @@ class ExportadorCsvTest {
         assertEquals("'+55119999", ExportadorCsv.texto("+55119999"));
         assertEquals("'-10", ExportadorCsv.texto("-10"));
         assertEquals("'@usuario", ExportadorCsv.texto("@usuario"));
+        assertEquals("'\tcmd", ExportadorCsv.texto("\tcmd"));
+        assertEquals("\"'\rcmd\"", ExportadorCsv.texto("\rcmd")); // CR também vai entre aspas
     }
 
     @Test

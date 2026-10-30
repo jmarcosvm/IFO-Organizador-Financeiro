@@ -1,7 +1,11 @@
 package com.ifo.backend.security;
 
 import com.ifo.backend.model.Usuario;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.Test;
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,6 +44,31 @@ class JwtServiceTest {
     @Test
     void chaveCurtaImpedeAInicializacao() {
         assertThrows(IllegalStateException.class, () -> new JwtService("curta", 60));
+    }
+
+    // O .env.example tem mais de 32 caracteres: só o tamanho não basta para barrar o segredo de exemplo
+    @Test
+    void segredoDeExemploDoEnvExampleImpedeAInicializacao() {
+        assertThrows(IllegalStateException.class,
+                () -> new JwtService("troque-por-uma-chave-aleatoria-com-32-ou-mais-caracteres", 60));
+        assertThrows(IllegalStateException.class,
+                () -> new JwtService("TROQUE-por-uma-chave-aleatoria-com-32-ou-mais-caracteres", 60));
+    }
+
+    // Ataque clássico "alg: none": token com o id certo, mas sem assinatura
+    @Test
+    void tokenSemAssinaturaEhRejeitado() {
+        String semAssinatura = Jwts.builder().subject("42").compact();
+
+        assertTrue(new JwtService(SEGREDO, 60).extrairIdUsuario(semAssinatura).isEmpty());
+    }
+
+    @Test
+    void tokenComSubjectQueNaoEhNumeroEhRejeitado() {
+        SecretKey chave = Keys.hmacShaKeyFor(SEGREDO.getBytes(StandardCharsets.UTF_8));
+        String token = Jwts.builder().subject("nao-e-um-id").signWith(chave).compact();
+
+        assertTrue(new JwtService(SEGREDO, 60).extrairIdUsuario(token).isEmpty());
     }
 
     private Usuario usuario(Long id) {
