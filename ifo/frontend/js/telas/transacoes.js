@@ -4,7 +4,7 @@ import { abrirFormTransacao } from "../componentes/formTransacao.js";
 import { criarSeletorMes, lerPeriodo, nomeMes } from "../componentes/seletorMes.js";
 import { criarTabelaTransacoes } from "../componentes/tabelaTransacoes.js";
 import { iniciarTela } from "../pagina.js";
-import { comBotaoOcupado, confirmar, el, estadoVazio, toast } from "../ui.js";
+import { comBotaoOcupado, confirmar, estadoVazio, faixaDeFalha, toast } from "../ui.js";
 
 const usuario = iniciarTela("transacoes");
 if (usuario) iniciar();
@@ -28,15 +28,7 @@ function iniciar() {
       );
     } catch (erro) {
       if (minha !== versao || (erro instanceof ApiErro && erro.status === 401)) return;
-      lista.replaceChildren(
-        el(
-          "div",
-          { class: "faixa faixa-perigo", role: "alert" },
-          erro instanceof ApiErro ? erro.mensagem : "Não foi possível carregar as transações.",
-          " ",
-          el("button", { type: "button", class: "btn btn-contorno btn-pequeno", onclick: carregar }, "Tentar novamente"),
-        ),
-      );
+      lista.replaceChildren(faixaDeFalha(erro, carregar, "Não foi possível carregar as transações."));
     }
   }
 
