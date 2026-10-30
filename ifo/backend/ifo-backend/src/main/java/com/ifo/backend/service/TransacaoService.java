@@ -38,6 +38,13 @@ public class TransacaoService {
                 .toList();
     }
 
+    // CSV do mês, do mais recente para o mais antigo (RF21, RN18); só dados do usuário do token
+    @Transactional(readOnly = true)
+    public byte[] exportar(Long idUsuario, YearMonth mes) {
+        return ExportadorCsv.gerar(repository.findByUsuarioIdUsuarioAndDataBetweenOrderByDataDescIdTransacaoDesc(
+                idUsuario, mes.atDay(1), mes.atEndOfMonth()));
+    }
+
     @Transactional
     public TransacaoComAlertaResponse criar(Long idUsuario, TransacaoRequest request) {
         Transacao transacao = new Transacao();
