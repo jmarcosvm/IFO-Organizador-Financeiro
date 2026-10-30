@@ -36,16 +36,16 @@ A V1 teve as Sprints 0–4. A refatoração continua a numeração com o prefixo
 - [x] Testes unitários do saldo e do resumo.
 
 ### R3 — Orçamento, metas, calculadora e recorrências
-- [ ] Criar orçamento padrão 50/30/20 no cadastro.
-- [ ] `GET/PUT /orcamento` com validação de soma = 100.
-- [ ] `GET /orcamento/status` e alerta embutido na resposta de `POST/PUT /transacoes`.
-- [ ] CRUD de metas + `POST /metas/{id}/aportes` + `progresso` e `concluida`.
-- [ ] `POST /investimentos/simular` com `BigDecimal` (caso de referência 3804,75).
-- [ ] Testes: níveis 79,9% / 80% / 100% / 100,01%; renda zero; soma ≠ 100.
-- [ ] CRUD de recorrências (`/recorrencias`) com validação de categoria DESPESA (RN14).
-- [ ] Job diário `@Scheduled` + geração ao criar a recorrência; avanço por `ultima_competencia`, sem duplicar (RN15–RN17).
-- [ ] Testes: dia 31 em mês curto, mês perdido (catch-up), rodar o job duas vezes, recorrência pausada/encerrada.
-- [ ] `GET /transacoes/exportar` (CSV `;`, BOM UTF-8, vírgula decimal, neutralização de `=+-@`) (RN18).
+- [x] Criar orçamento padrão 50/30/20 no cadastro.
+- [x] `GET/PUT /orcamento` com validação de soma = 100.
+- [x] `GET /orcamento/status` e alerta embutido na resposta de `POST/PUT /transacoes`.
+- [x] CRUD de metas + `POST /metas/{id}/aportes` + `progresso` e `concluida`.
+- [x] `POST /investimentos/simular` com `BigDecimal` (caso de referência 3804,75).
+- [x] Testes: níveis 79,9% / 80% / 100% / 100,01%; renda zero; soma ≠ 100.
+- [x] CRUD de recorrências (`/recorrencias`) com validação de categoria DESPESA (RN14).
+- [x] Job diário `@Scheduled` + geração ao criar a recorrência; avanço por `ultima_competencia`, sem duplicar (RN15–RN17).
+- [x] Testes: dia 31 em mês curto, mês perdido (catch-up), rodar o job duas vezes, recorrência pausada/encerrada.
+- [x] `GET /transacoes/exportar` (CSV `;`, BOM UTF-8, vírgula decimal, neutralização de `=+-@`) (RN18).
 
 ### R4 — Frontend
 - [ ] Definir design tokens (cores, tipografia, espaçamento, raios) em variáveis CSS.
