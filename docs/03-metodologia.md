@@ -45,7 +45,7 @@ Uma tarefa só entra na sprint se tiver: objetivo claro, requisitos/regras relac
 |---|---|---|
 | Unitário | JUnit 5 + Mockito | Regras de negócio nos *services* (saldo, alerta, juros, metas) |
 | Integração | Spring Boot Test + **Testcontainers (PostgreSQL)** | Repositórios, migrations e endpoints protegidos |
-| Aceitação (BDD) | Cucumber (português) | Fluxos: cadastro/login, lançar despesa com alerta, meta, calculadora |
+| Aceitação (BDD) | Cucumber (português) | Fluxos: cadastro/login, lançar despesa com alerta, meta, simulador |
 | Manual | Roteiro por tela | Responsividade, acessibilidade básica, bugs visuais |
 
 Regra: os passos do Cucumber **chamam o código real** (services/API). Nada de "login simulado" com senha fixa, como na V1.

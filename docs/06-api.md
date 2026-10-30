@@ -88,7 +88,7 @@ Validações: `valor > 0`; `idCategoria` existente; `data` obrigatória; `descri
   "prazo": "2026-12-31", "progresso": 15.0, "concluida": false }
 ```
 
-## 7. Calculadora de investimentos (sem persistência)
+## 7. Simulador de investimentos (sem persistência)
 
 | Método | Rota | Corpo | Resposta |
 |---|---|---|---|

@@ -81,7 +81,7 @@ Resultado da leitura do repositório `jmarcosvm/IFO-Organizador-Financeiro` (com
 | Hash BCrypt e token JWT no processo de autenticação | Nada disso existe | Implementar (R1) |
 | Diagramas com Conta/Carteira, "Gerenciar Contas" e "Gerenciar Categorias (CRUD)" | Contas sem tela; categorias fixas | Remover do escopo e dos diagramas (feito em `05-diagramas.md`) |
 | Alerta de estouro e "Verificar saldo" no BPMN | Inexistentes | Alerta em R3; verificação descartada |
-| Simulação com "Salvar simulação no BD" | Grava no banco um `montanteFinal` calculado no JavaScript | Calculadora sem persistência |
+| Simulação com "Salvar simulação no BD" | Grava no banco um `montanteFinal` calculado no JavaScript | Simulador sem persistência |
 | `TransacaoReceita` e `TransacaoDespesa` no diagrama de classes | Uma entidade `Transacao` só | Diagrama novo usa `Transacao` única |
 | Usuário "Douglas" nos diagramas | — | Trocado por "João" |
 | Referência "FAWLER, Martin" | — | Corrigir para **FOWLER** |

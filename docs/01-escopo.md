@@ -39,7 +39,7 @@ O IFO é uma aplicação web que ajuda pessoas a controlar as finanças pessoais
 | 6 | Orçamento 50/30/20 | Percentuais por grupo, editáveis pelo usuário (soma = 100%) |
 | 7 | Alerta de estouro | Aviso simples em 80% (atenção) e acima de 100% (estouro) |
 | 8 | Metas financeiras | CRUD, aporte manual e barra de progresso |
-| 9 | Calculadora de investimentos | Juros simples e compostos, **sem salvar** no banco |
+| 9 | Simulador de investimentos | Juros simples e compostos, **sem salvar** no banco |
 | 10 | Gráfico de pizza simples | Distribuição das despesas do mês por grupo |
 | 11 | Despesas recorrentes | Modelo mensal (ex.: internet, luz) que gera a transação automaticamente |
 | 12 | Exportar CSV | Download das transações do mês filtrado |
@@ -48,7 +48,7 @@ O IFO é uma aplicação web que ajuda pessoas a controlar as finanças pessoais
 ## 4. Fora do escopo (decisões já tomadas)
 
 - **Conta/Carteira** (tabela, API e diagramas) — removida; não será usada.
-- **Persistência de simulações de investimento** — a calculadora é apenas cálculo.
+- **Persistência de simulações de investimento** — o simulador é apenas cálculo.
 - **Categorias criadas pelo usuário** — a lista de categorias é fixa; o usuário altera apenas a **descrição** da transação.
 - **Dashboards interativos** (gráficos dinâmicos, cartões avançados, drill-down) — ficam para o **IFO V2 (futuro)**.
 - Integração bancária, app mobile nativo, 2FA e IA para sugestões — backlog futuro.
