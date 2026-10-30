@@ -209,6 +209,14 @@
 }
 
 .tabela .numero { text-align: right; white-space: nowrap; }
+.tabela th { white-space: nowrap; }
+
+/* Texto livre (descrição, categoria): pode quebrar em qualquer ponto, para uma palavra enorme
+   não alargar a tabela e empurrar o Valor para fora da tela. Datas, tipo e situação ficam inteiros. */
+.tabela .col-texto { min-width: 6rem; overflow-wrap: anywhere; }
+@media (min-width: 768px) {
+  .tabela .col-fixa { white-space: nowrap; }
+}
 
 /* Celular: cada linha vira um cartão; o rótulo vem de data-rotulo */
 @media (max-width: 767px) {
@@ -387,6 +395,12 @@ dialog.modal h2 { margin-bottom: var(--espaco-3); }
   color: var(--cor-texto-suave);
 }
 
+/* Celular estreito: sem espaço para o nome ao lado dos botões, a barra quebraria em 2 linhas.
+   O nome continua acessível pela tela de Perfil. */
+@media (max-width: 479px) {
+  .navbar-usuario { display: none; }
+}
+
 @media (min-width: 1024px) {
   .navbar-alternar { display: none; }
 
@@ -449,10 +463,9 @@ dialog.modal h2 { margin-bottom: var(--espaco-3); }
   border: 0;
 }
 
-.cartao-estreito { max-width: 32rem; }
-
 /* Página de conteúdo estreito e centralizado (ex.: simulador): título, formulário e resultado na mesma coluna */
 .conteudo.coluna-central { max-width: 48rem; }
+.conteudo.coluna-estreita { max-width: 34rem; }
 
 /* ---------- Seletor de mês ---------- */
 

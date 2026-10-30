@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Despesas recorrentes · IFO</title>
+    <!-- Aplica o tema salvo antes da pintura (evita "piscar"); ver js/tema.js -->
+    <script>
+      try {
+        var t = localStorage.getItem("ifo.tema");
+        if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
+  </head>
+  <body>
+    <a class="pular-conteudo" href="#conteudo">Ir para o conteúdo</a>
+    <header id="navbar" class="navbar"></header>
+
+    <main id="conteudo" class="conteudo pilha">
+      <div class="cabecalho-pagina">
+        <h1>Despesas recorrentes</h1>
+        <button type="button" id="nova-recorrencia" class="btn btn-primario">+ Nova recorrência</button>
+      </div>
+
+      <div class="faixa faixa-info">
+        O IFO lança a despesa sozinho todo mês, no dia escolhido (em meses curtos, no último dia). Pausar ou excluir
+        vale só para os meses seguintes: o que já foi lançado fica nas suas transações.
+      </div>
+
+      <section class="cartao" aria-label="Lista de despesas recorrentes">
+        <div id="lista-recorrencias" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="rodape">IFO · Inteligência Financeira Organizada · Projeto acadêmico FATEC Cotia</footer>
+
+    <script type="module" src="js/telas/recorrencias.js"></script>
+  </body>
+</html>

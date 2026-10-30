@@ -5,8 +5,9 @@
 import { dataBR, moeda, nomeGrupo, nomeTipo } from "../formato.js";
 import { el, estadoVazio } from "../ui.js";
 
-function celula(rotulo, ...filhos) {
-  return el("td", { "data-rotulo": rotulo }, ...filhos);
+// classe: "col-texto" (pode quebrar em qualquer ponto) ou "col-fixa" (fica inteira); ver componentes.css
+function celula(rotulo, classe, ...filhos) {
+  return el("td", { "data-rotulo": rotulo, class: classe }, ...filhos);
 }
 
 function linha(transacao, { aoEditar, aoExcluir }) {
@@ -15,10 +16,10 @@ function linha(transacao, { aoEditar, aoExcluir }) {
   const grupo = transacao.categoria.grupo ? ` · ${nomeGrupo(transacao.categoria.grupo)}` : "";
 
   const celulas = [
-    celula("Data", dataBR(transacao.data)),
-    celula("Descrição", transacao.descricao || "—"),
-    celula("Categoria", `${transacao.categoria.nome}${grupo}`),
-    celula("Tipo", el("span", { class: `selo ${receita ? "selo-receita" : "selo-despesa"}` }, nomeTipo(transacao.categoria.tipo))),
+    celula("Data", "col-fixa", dataBR(transacao.data)),
+    celula("Descrição", "col-texto", transacao.descricao || "—"),
+    celula("Categoria", "col-texto", `${transacao.categoria.nome}${grupo}`),
+    celula("Tipo", "col-fixa", el("span", { class: `selo ${receita ? "selo-receita" : "selo-despesa"}` }, nomeTipo(transacao.categoria.tipo))),
     // o sinal em texto garante a leitura sem depender só da cor
     el("td", { class: `numero ${receita ? "receita" : "despesa"}`, "data-rotulo": "Valor" }, `${receita ? "+" : "−"} ${moeda(transacao.valor)}`),
   ];
@@ -27,6 +28,7 @@ function linha(transacao, { aoEditar, aoExcluir }) {
     celulas.push(
       celula(
         "Ações",
+        "col-fixa",
         el(
           "div",
           { class: "acoes-linha" },
@@ -49,7 +51,7 @@ export function criarTabelaTransacoes(transacoes, opcoes = {}) {
 
   return el(
     "div",
-    { class: "tabela-rolagem" },
+    { class: "tabela-rolagem", tabindex: "0", role: "region", "aria-label": "Tabela de transações" },
     el(
       "table",
       { class: "tabela tabela-cartoes" },

@@ -9,7 +9,7 @@ import { criarSeletorMes, lerPeriodo } from "../componentes/seletorMes.js";
 import { criarTabelaTransacoes } from "../componentes/tabelaTransacoes.js";
 import { moeda, percentual } from "../formato.js";
 import { iniciarTela } from "../pagina.js";
-import { el, estadoVazio, toast } from "../ui.js";
+import { el, estadoVazio, faixaDeFalha, toast } from "../ui.js";
 
 const usuario = iniciarTela("dashboard");
 if (usuario) iniciar();
@@ -120,15 +120,7 @@ function iniciar() {
       renderizar({ resumo, status, transacoes, metas });
     } catch (erro) {
       if (minha !== versao || (erro instanceof ApiErro && erro.status === 401)) return;
-      conteudo.replaceChildren(
-        el(
-          "div",
-          { class: "faixa faixa-perigo", role: "alert" },
-          erro instanceof ApiErro ? erro.mensagem : "Não foi possível carregar o painel.",
-          " ",
-          el("button", { type: "button", class: "btn btn-contorno btn-pequeno", onclick: carregar }, "Tentar novamente"),
-        ),
-      );
+      conteudo.replaceChildren(faixaDeFalha(erro, carregar, "Não foi possível carregar o painel."));
     }
   }
 

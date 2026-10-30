@@ -14,7 +14,7 @@ function cartaoValor(titulo, valor, destaque = false) {
 function criarEvolucao(evolucao) {
   const tabela = el(
     "div",
-    { class: "tabela-rolagem" },
+    { class: "tabela-rolagem", tabindex: "0", role: "region", "aria-label": "Evolução mês a mês" },
     el(
       "table",
       { class: "tabela tabela-cartoes" },

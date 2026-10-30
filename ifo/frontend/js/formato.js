@@ -61,3 +61,10 @@ const formatadorTaxa = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 4
 export function taxa(valor) {
   return `${formatadorTaxa.format(valor ?? 0)}%`;
 }
+
+// "2026-10-01" -> "10/2026" (competência: o mês de uma geração automática)
+export function mesAno(dataISO) {
+  if (!dataISO) return "—";
+  const [ano, mes] = dataISO.split("-");
+  return `${mes}/${ano}`;
+}

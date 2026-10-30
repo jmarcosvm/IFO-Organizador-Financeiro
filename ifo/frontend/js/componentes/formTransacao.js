@@ -19,8 +19,9 @@ export function carregarCategorias() {
   return categoriasEmCache;
 }
 
-// <optgroup> por tipo/grupo: Receitas, e as despesas separadas por grupo
-function criarOpcoes(categorias) {
+// <optgroup> por tipo/grupo: Receitas, e as despesas separadas por grupo.
+// somenteDespesas: para recorrências, que só aceitam categoria de despesa (RN14)
+export function criarOpcoes(categorias, { somenteDespesas = false } = {}) {
   const opcao = (c) => el("option", { value: String(c.idCategoria) }, c.nome);
   const receitas = categorias.filter((c) => c.tipo === "RECEITA");
   const grupos = ORDEM_GRUPOS.map((grupo) => ({
@@ -30,7 +31,7 @@ function criarOpcoes(categorias) {
 
   return [
     el("option", { value: "" }, "Selecione…"),
-    el("optgroup", { label: "Receitas" }, receitas.map(opcao)),
+    ...(somenteDespesas ? [] : [el("optgroup", { label: "Receitas" }, receitas.map(opcao))]),
     ...grupos.map((g) => el("optgroup", { label: `Despesas · ${nomeGrupo(g.grupo)}` }, g.categorias.map(opcao))),
   ];
 }
