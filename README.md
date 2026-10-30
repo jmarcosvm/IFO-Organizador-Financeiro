@@ -4,7 +4,7 @@ Aplicação web para **controle financeiro pessoal**: registre receitas e despes
 
 Projeto acadêmico da **FATEC Cotia** — Desenvolvimento de Software Multiplataforma (Engenharia de Software II).
 
-> **Status:** em revisão (IFO V1 revisada). A documentação em [`docs/`](docs/) descreve o alvo; veja o roadmap para o andamento.
+> **Status:** em revisão (IFO V1 revisada). Backend (R1–R3) e frontend (R4) concluídos; falta a Sprint R5 (qualidade e entrega). A documentação em [`docs/`](docs/) descreve o alvo; veja o roadmap para o andamento.
 
 ## Funcionalidades
 
@@ -35,7 +35,7 @@ Projeto acadêmico da **FATEC Cotia** — Desenvolvimento de Software Multiplata
 ```text
 ifo/
 ├── backend/ifo-backend/   # API Spring Boot (migrations em src/main/resources/db/migration)
-└── frontend/              # páginas, CSS e JavaScript
+└── frontend/              # uma página HTML por tela, css/ (tokens, base, componentes) e js/ (módulos ES)
 docs/                      # escopo, requisitos, diagramas, API, roadmap
 docker-compose.yml         # PostgreSQL 15
 .env.example               # modelo das variáveis de ambiente
@@ -43,7 +43,7 @@ docker-compose.yml         # PostgreSQL 15
 
 ## Como executar
 
-Pré-requisitos: Java 17, Docker e um servidor estático simples para o frontend (ex.: extensão Live Server do VS Code).
+Pré-requisitos: Java 17, Docker e um servidor estático simples para o frontend (ex.: extensão Live Server do VS Code). O frontend usa módulos ES, então **precisa** ser aberto por um servidor (`http://localhost:5500`), não por duplo clique no arquivo.
 
 1. **Variáveis de ambiente**: copie `.env.example` para `.env` na raiz e troque `DB_PASSWORD` e `JWT_SECRET` (mínimo de 32 caracteres). O `.env` é lido pelo Docker Compose e pelo backend, e **nunca** deve ser versionado.
 
@@ -66,12 +66,14 @@ Pré-requisitos: Java 17, Docker e um servidor estático simples para o frontend
 
 4. **Frontend**
 
+   Com o Live Server do VS Code, abra a pasta `ifo/frontend` e clique em *Go Live* (porta 5500). Sem VS Code, qualquer servidor estático serve:
+
    ```bash
    cd ifo/frontend
    python3 -m http.server 5500
    ```
 
-   Abra `http://localhost:5500`.
+   Abra `http://localhost:5500` (a API só aceita as origens `http://localhost:5500` e `http://127.0.0.1:5500`; para mudar, ajuste `CORS_ORIGINS` no `.env`). Crie uma conta na tela de cadastro e informe sua renda: sem renda não há limites de orçamento nem alertas.
 
 5. **Testes** (por enquanto usam o PostgreSQL do Docker Compose; Testcontainers entra na Sprint R5)
 
