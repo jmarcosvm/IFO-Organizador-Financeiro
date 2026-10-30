@@ -1,76 +1,64 @@
 package com.ifo.backend.steps;
 
-import com.ifo.backend.dto.AuthResponse;
-import com.ifo.backend.dto.CadastroRequest;
-import com.ifo.backend.dto.LoginRequest;
-import com.ifo.backend.exception.CredenciaisInvalidasException;
-import com.ifo.backend.security.JwtService;
-import com.ifo.backend.service.AuthService;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
-import java.math.BigDecimal;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// Chama o AuthService de verdade (BCrypt + JWT), nada de senha fixa
+// Login pela API de verdade (BCrypt + JWT + filtro de segurança), nada de senha fixa
 public class LoginSteps {
 
     @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private JwtService jwtService;
+    private ApiCliente api;
 
     private String email;
-    private AuthResponse resposta;
-    private String mensagemErro;
 
     @Dado("que existe um usuário cadastrado com a senha {string}")
     public void usuario_cadastrado(String senha) {
         email = "login-" + UUID.randomUUID() + "@ifo.teste";
-        authService.cadastrar(new CadastroRequest("Usuário Teste", email, senha, BigDecimal.valueOf(1500)));
+        api.post("/api/auth/cadastro", Map.of("nome", "Usuário Teste", "email", email, "senha", senha, "rendaMensal", 1500));
+        assertEquals(201, api.status(), "Cadastro falhou: " + api.corpo());
     }
 
     @Quando("ele faz login com a senha {string}")
     public void fazer_login(String senha) {
-        tentarLogin(email, senha);
+        api.post("/api/auth/login", Map.of("email", email, "senha", senha));
     }
 
     @Quando("alguém tenta login com email {string} e senha {string}")
     public void tentar_login(String emailInformado, String senha) {
-        tentarLogin(emailInformado, senha);
+        api.post("/api/auth/login", Map.of("email", emailInformado, "senha", senha));
     }
 
     @Entao("o login deve ser realizado com sucesso")
     public void login_sucesso() {
-        assertNull(mensagemErro, "Login falhou: " + mensagemErro);
-        assertEquals(email, resposta.usuario().email());
+        assertEquals(200, api.status(), "Login falhou: " + api.corpo());
+        assertEquals(email, api.corpo().path("usuario").path("email").asText());
     }
 
+    // Prova de que o token funciona: usa ele numa rota protegida
     @Entao("ele deve receber um token de acesso válido")
     public void token_valido() {
-        assertEquals(resposta.usuario().idUsuario(), jwtService.extrairIdUsuario(resposta.token()).orElseThrow());
+        String token = api.corpo().path("token").asText();
+        assertFalse(token.isBlank(), "Resposta sem token");
+        api.autenticarCom(token);
+        api.get("/api/usuarios/me");
+        assertEquals(200, api.status());
+        assertEquals(email, api.corpo().path("email").asText());
     }
 
     @Entao("o sistema deve retornar erro de autenticação")
     public void erro_autenticacao() {
-        assertNull(resposta, "Login deveria falhar");
-        assertNotNull(mensagemErro);
+        assertEquals(401, api.status());
+        assertTrue(api.corpo().path("token").isMissingNode(), "Erro de login não pode devolver token");
     }
 
     @Entao("a mensagem deve ser {string}")
     public void mensagem_erro(String mensagem) {
-        assertEquals(mensagem, mensagemErro);
-    }
-
-    private void tentarLogin(String emailInformado, String senha) {
-        try {
-            resposta = authService.login(new LoginRequest(emailInformado, senha));
-        } catch (CredenciaisInvalidasException e) {
-            mensagemErro = e.getMessage();
-        }
+        assertEquals(mensagem, api.corpo().path("mensagem").asText());
     }
 }
