@@ -53,7 +53,7 @@ public class TransacaoSteps {
     @Quando("eu lanço {bigdecimal} na categoria {string}")
     @Dado("que eu lancei {bigdecimal} na categoria {string}")
     public void lancar(BigDecimal valor, String nomeCategoria) {
-        transacaoCriada = transacaoService.criar(idUsuario, novaTransacao(valor, nomeCategoria, LocalDate.now()));
+        transacaoCriada = transacaoService.criar(idUsuario, novaTransacao(valor, nomeCategoria, LocalDate.now())).transacao();
     }
 
     @Dado("que eu lancei {bigdecimal} na categoria {string} em {string}")
@@ -108,7 +108,7 @@ public class TransacaoSteps {
     @Quando("eu edito essa transação para {bigdecimal} na categoria {string}")
     public void editar(BigDecimal valor, String nomeCategoria) {
         transacaoEditada = transacaoService.atualizar(idUsuario, transacaoCriada.idTransacao(),
-                novaTransacao(valor, nomeCategoria, LocalDate.now()));
+                novaTransacao(valor, nomeCategoria, LocalDate.now())).transacao();
     }
 
     @Entao("a transação deve manter o mesmo id")

@@ -23,11 +23,14 @@ public class AuthService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final OrcamentoService orcamentoService;
 
-    public AuthService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public AuthService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, JwtService jwtService,
+                       OrcamentoService orcamentoService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.orcamentoService = orcamentoService;
     }
 
     @Transactional
@@ -43,6 +46,7 @@ public class AuthService {
         usuario.setSenhaHash(passwordEncoder.encode(request.senha()));
         usuario.setRendaMensal(request.rendaMensal() != null ? request.rendaMensal() : BigDecimal.ZERO);
         usuario = usuarioRepository.save(usuario);
+        orcamentoService.criarPadrao(usuario);
 
         return new AuthResponse(jwtService.gerarToken(usuario), UsuarioResponse.from(usuario));
     }
