@@ -24,6 +24,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final OrcamentoService orcamentoService;
+    // Hash de uma senha qualquer, só para o login gastar o mesmo tempo de BCrypt com e-mail inexistente
+    private final String hashFicticio;
 
     public AuthService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, JwtService jwtService,
                        OrcamentoService orcamentoService) {
@@ -31,6 +33,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.orcamentoService = orcamentoService;
+        this.hashFicticio = passwordEncoder.encode("senha-ficticia-so-para-gastar-tempo");
     }
 
     @Transactional
@@ -51,12 +54,16 @@ public class AuthService {
         return new AuthResponse(jwtService.gerarToken(usuario), UsuarioResponse.from(usuario));
     }
 
-    // Mesma mensagem para e-mail inexistente e senha errada: não revela quais e-mails existem
+    // Mesma mensagem e mesmo tempo (BCrypt sempre roda) para e-mail inexistente e senha errada:
+    // nem a resposta nem a demora revelam quais e-mails existem
     @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest request) {
-        Usuario usuario = usuarioRepository.findByEmail(normalizarEmail(request.email()))
-                .filter(u -> passwordEncoder.matches(request.senha(), u.getSenhaHash()))
-                .orElseThrow(() -> new CredenciaisInvalidasException(MENSAGEM_LOGIN_INVALIDO));
+        Usuario usuario = usuarioRepository.findByEmail(normalizarEmail(request.email())).orElse(null);
+        boolean senhaCorreta = passwordEncoder.matches(request.senha(),
+                usuario != null ? usuario.getSenhaHash() : hashFicticio);
+        if (usuario == null || !senhaCorreta) {
+            throw new CredenciaisInvalidasException(MENSAGEM_LOGIN_INVALIDO);
+        }
 
         return new AuthResponse(jwtService.gerarToken(usuario), UsuarioResponse.from(usuario));
     }
