@@ -1,5 +1,6 @@
 package com.ifo.backend.controller;
 
+import com.ifo.backend.dto.AporteRequest;
 import com.ifo.backend.dto.MetaRequest;
 import com.ifo.backend.dto.MetaResponse;
 import com.ifo.backend.service.MetaFinanceiraService;
@@ -29,6 +30,19 @@ public class MetaFinanceiraController {
     public ResponseEntity<MetaResponse> criar(@AuthenticationPrincipal Long idUsuario,
                                               @Valid @RequestBody MetaRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criar(idUsuario, request));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MetaResponse> atualizar(@AuthenticationPrincipal Long idUsuario, @PathVariable Long id,
+                                                  @Valid @RequestBody MetaRequest request) {
+        return ResponseEntity.ok(service.atualizar(idUsuario, id, request));
+    }
+
+    // POST /api/metas/{id}/aportes com { "valor": 150.00 }
+    @PostMapping("/{id}/aportes")
+    public ResponseEntity<MetaResponse> aportar(@AuthenticationPrincipal Long idUsuario, @PathVariable Long id,
+                                                @Valid @RequestBody AporteRequest request) {
+        return ResponseEntity.ok(service.aportar(idUsuario, id, request));
     }
 
     @DeleteMapping("/{id}")
