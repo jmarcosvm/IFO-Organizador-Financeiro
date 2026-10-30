@@ -23,6 +23,8 @@
         <!-- Versão do Cucumber -->
         <cucumber.version>7.15.0</cucumber.version>
         <jjwt.version>0.12.6</jjwt.version>
+        <!-- Testcontainers 1.19 (padrão do Spring Boot 3.2.0) é rejeitado pelo Docker Engine novo (API mínima 1.40) -->
+        <testcontainers.version>1.21.4</testcontainers.version>
     </properties>
 
     <dependencies>
@@ -88,6 +90,18 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- PostgreSQL real nos testes de integração (R5) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
             <scope>test</scope>
         </dependency>
 
