@@ -64,8 +64,8 @@ A V1 teve as Sprints 0–4. A refatoração continua a numeração com o prefixo
 - [x] Acessibilidade básica: `label`, foco visível, contraste AA, teclado. *(Parte 5; `axe-core` sem violações WCAG 2.x A/AA)*
 
 ### R5 — Qualidade e entrega
-- [ ] Testcontainers (PostgreSQL) para integração.
-- [ ] Reescrever Cucumber chamando o código real (login, transação com alerta, meta, simulador).
+- [x] Testcontainers (PostgreSQL) para integração. *(Parte 1: `PostgresTestConfig`, perfil `teste`; só precisa do Docker ligado, não do `ifo-db`)*
+- [x] Reescrever Cucumber chamando o código real (login, transação com alerta, meta, simulador). *(Parte 1: via HTTP com MockMvc e JWT; 33 cenários em 6 features)*
 - [ ] Revisão de segurança: ninguém acessa dado alheio; segredos fora do repo.
 - [ ] README final, `dev-seed.sql`, passo a passo de execução.
 - [ ] Atualizar o PDF do seminário com os diagramas novos (inclui regenerar `docs/img/seq-simulador.png`, cuja imagem ainda mostra o nome antigo da classe, e conferir o `bpmn-5-simulador.png`).
