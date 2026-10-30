@@ -450,3 +450,30 @@ dialog.modal h2 { margin-bottom: var(--espaco-3); }
 }
 
 .cartao-estreito { max-width: 32rem; }
+
+/* ---------- Seletor de mês ---------- */
+
+.seletor-mes { display: flex; flex-wrap: wrap; gap: var(--espaco-2); }
+.entrada-auto { width: auto; min-width: 8rem; }
+
+/* ---------- Ações de uma linha da tabela ---------- */
+
+.acoes-linha { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--espaco-2); }
+
+/* ---------- Pizza (rosca) e legenda ---------- */
+
+.pizza-bloco { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-5); }
+
+.pizza {
+  flex-shrink: 0;
+  width: 10rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  /* a máscara fura o meio e vira rosca; deixa o fundo do cartão aparecer */
+  -webkit-mask: radial-gradient(circle, transparent 0 52%, #000 53%);
+  mask: radial-gradient(circle, transparent 0 52%, #000 53%);
+}
+
+.legenda { display: flex; flex-direction: column; gap: var(--espaco-2); padding: 0; list-style: none; }
+.legenda-item { display: flex; align-items: center; gap: var(--espaco-2); font-size: var(--texto-sm); }
+.legenda-cor { flex-shrink: 0; width: 1rem; height: 1rem; border-radius: var(--raio-sm); }

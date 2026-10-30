@@ -53,11 +53,11 @@ A V1 teve as Sprints 0–4. A refatoração continua a numeração com o prefixo
 - [ ] Reescrever `app.js` em módulos ES (`api.js`, `auth.js`, `ui.js` e um arquivo por tela).
 - [x] Cliente de API com token e tratamento central de erros (401 volta ao login). *(Parte 2: `js/api.js`, `auth.js`, `sessao.js`)*
 - [ ] Telas: login, cadastro, dashboard, transações (filtro de mês), orçamento, metas, calculadora, perfil.
-- [ ] Formulário de transação: **categoria → (grupo exibido automaticamente) → descrição**.
-- [ ] Alerta de orçamento (faixa amarela/vermelha) no lançamento e no dashboard.
-- [ ] Gráfico de pizza simples (SVG ou `conic-gradient`, sem biblioteca).
+- [x] Formulário de transação: **categoria → (grupo exibido automaticamente) → descrição**. *(Parte 3: `componentes/formTransacao.js`)*
+- [x] Alerta de orçamento (faixa amarela/vermelha) no lançamento e no dashboard. *(Parte 3)*
+- [x] Gráfico de pizza simples (SVG ou `conic-gradient`, sem biblioteca). *(Parte 3: `conic-gradient`)*
 - [ ] Tela de **despesas recorrentes** (listar, criar, editar, pausar, excluir).
-- [ ] Botão **Exportar CSV** na tela de transações, respeitando o filtro de mês.
+- [x] Botão **Exportar CSV** na tela de transações, respeitando o filtro de mês. *(Parte 3)*
 - [x] **Dark mode:** tokens de cor em `:root` e `[data-theme="dark"]`, padrão por `prefers-color-scheme`, botão de alternar, escolha em `localStorage`; conferir contraste AA nos dois temas e as cores do gráfico de pizza.
 - [ ] Trocar `innerHTML` com dados do usuário por `textContent`/escape.
 - [ ] Levantar e corrigir bugs visuais (checklist por tela abaixo).
