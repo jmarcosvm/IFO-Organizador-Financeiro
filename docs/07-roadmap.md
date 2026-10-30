@@ -66,7 +66,7 @@ A V1 teve as Sprints 0–4. A refatoração continua a numeração com o prefixo
 ### R5 — Qualidade e entrega
 - [x] Testcontainers (PostgreSQL) para integração. *(Parte 1: `PostgresTestConfig`, perfil `teste`; só precisa do Docker ligado, não do `ifo-db`)*
 - [x] Reescrever Cucumber chamando o código real (login, transação com alerta, meta, simulador). *(Parte 1: via HTTP com MockMvc e JWT; 33 cenários em 6 features)*
-- [ ] Revisão de segurança: ninguém acessa dado alheio; segredos fora do repo.
+- [x] Revisão de segurança: ninguém acessa dado alheio; segredos fora do repo. *(Parte 2: ADR-016; `isolamento.feature` e `acesso.feature`; 132 testes)*
 - [ ] README final, `dev-seed.sql`, passo a passo de execução.
 - [ ] Atualizar o PDF do seminário com os diagramas novos (inclui regenerar `docs/img/seq-simulador.png`, cuja imagem ainda mostra o nome antigo da classe, e conferir o `bpmn-5-simulador.png`).
 
@@ -117,5 +117,6 @@ Marcar por tela, em celular (360 px) e desktop (1280 px):
 | ADR-013 | **Dark mode** por variáveis CSS, `prefers-color-scheme` e `localStorage` | Sem biblioteca; reaproveita os design tokens da R4 |
 | ADR-014 | Frontend **multi-página** (um `.html` por tela) com **módulos ES**; sessão (JWT + usuário) em `localStorage` (`ifo.sessao`); **um único cliente de API** (`api.js`) que injeta o token e leva o 401 de rota protegida ao login; **sem `alert`/`confirm`/`prompt`** (toasts e `<dialog>`); dado dinâmico entra no DOM só por `textContent` (helper `el()`), nunca por `innerHTML` | Mantém a estrutura da V1 e o Live Server sem build (ADR-006); centraliza token e erros; fecha o XSS da V1 (RNF03); `<dialog>` dá foco e Esc de graça (RNF08) |
 | ADR-015 | Funcionalidade renomeada de **"Calculadora" para "Simulador de investimentos"** em interface, código (`SimuladorService`, `simulador.html`), testes e docs; a rota `/investimentos/simular` não muda | "Calculadora" era ambíguo no menu; "Simulador" descreve o que a tela faz (simula, sem salvar nada, ADR-003) e combina com a rota `simular` |
+| ADR-016 | **Revisão de segurança (R5):** login gasta o mesmo tempo de BCrypt com e-mail inexistente; `JwtService` recusa o `JWT_SECRET` de exemplo (`troque...`); CSV neutraliza também TAB e CR no início; **sem limite de tentativas de login (risco aceito)** | O `.env.example` tem mais de 32 caracteres e passaria na checagem de tamanho; o tempo de resposta não pode revelar quais e-mails existem; TAB/CR iniciam fórmula em algumas planilhas (OWASP). Riscos aceitos e documentados: sem limitador de tentativas (projeto acadêmico, BCrypt já deixa cada tentativa lenta, e um limitador em memória some a cada reinício), token em `localStorage` (ADR-014; mitigado por não haver `innerHTML`), token sem revogação no servidor (vale até expirar, 480 min), cadastro responde 409 para e-mail já usado, senha só exige 8 a 72 caracteres |
 
 Novas decisões entram nesta tabela com número sequencial.
