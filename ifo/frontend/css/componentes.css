@@ -439,3 +439,14 @@ dialog.modal h2 { margin-bottom: var(--espaco-3); }
   right: var(--espaco-3);
   background: var(--cor-superficie);
 }
+
+/* ---------- Utilitários de formulário ---------- */
+
+/* <fieldset> sem a moldura padrão do navegador (usado para desabilitar o grupo todo) */
+.conjunto {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+.cartao-estreito { max-width: 32rem; }
