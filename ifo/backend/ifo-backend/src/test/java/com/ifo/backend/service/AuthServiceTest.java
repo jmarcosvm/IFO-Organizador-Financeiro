@@ -30,7 +30,7 @@ class AuthServiceTest {
     @BeforeEach
     void setUp() {
         repository = mock(UsuarioRepository.class);
-        passwordEncoder = new BCryptPasswordEncoder(4); // custo baixo só para o teste ficar rápido
+        passwordEncoder = spy(new BCryptPasswordEncoder(4)); // custo baixo só para o teste ficar rápido
         JwtService jwtService = new JwtService("chave-de-teste-com-mais-de-32-caracteres-123", 60);
         orcamentoService = mock(OrcamentoService.class);
         authService = new AuthService(repository, passwordEncoder, jwtService, orcamentoService);
@@ -100,12 +100,32 @@ class AuthServiceTest {
         assertEquals("E-mail ou senha inválidos.", erro.getMessage());
     }
 
+    // Sem isto, e-mail inexistente responderia bem mais rápido que senha errada e o tempo revelaria quem tem conta
+    @Test
+    void loginComEmailInexistenteGastaOMesmoBCryptDeUmaSenhaErrada() {
+        when(repository.findByEmail(any())).thenReturn(Optional.empty());
+
+        assertThrows(CredenciaisInvalidasException.class,
+                () -> authService.login(new LoginRequest("ninguem@ifo.teste", "qualquer123")));
+
+        verify(passwordEncoder).matches(eq("qualquer123"), anyString());
+    }
+
+    @Test
+    void loginDeEmailInexistenteNuncaAceitaASenhaFicticia() {
+        when(repository.findByEmail(any())).thenReturn(Optional.empty());
+
+        assertThrows(CredenciaisInvalidasException.class, () -> authService.login(
+                new LoginRequest("ninguem@ifo.teste", "senha-ficticia-so-para-gastar-tempo")));
+    }
+
     private Usuario usuarioComSenha(String senha) {
         Usuario usuario = new Usuario();
         usuario.setIdUsuario(1L);
         usuario.setNome("João");
         usuario.setEmail("joao@ifo.teste");
-        usuario.setSenhaHash(passwordEncoder.encode(senha));
+        // Encoder à parte: chamar o spy dentro de when(...).thenReturn(...) quebra o stubbing do Mockito
+        usuario.setSenhaHash(new BCryptPasswordEncoder(4).encode(senha));
         return usuario;
     }
 }

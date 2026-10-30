@@ -46,7 +46,8 @@ public final class ExportadorCsv {
         }
         String seguro = texto;
         char primeiro = seguro.charAt(0);
-        if (primeiro == '=' || primeiro == '+' || primeiro == '-' || primeiro == '@') {
+        // Tab e CR também iniciam fórmula em algumas planilhas (lista da OWASP: = + - @ TAB CR)
+        if (primeiro == '=' || primeiro == '+' || primeiro == '-' || primeiro == '@' || primeiro == '\t' || primeiro == '\r') {
             seguro = "'" + seguro; // o Excel passa a ler como texto, não como fórmula (RNF15)
         }
         if (seguro.contains(SEPARADOR) || seguro.contains("\"") || seguro.contains("\n") || seguro.contains("\r")) {

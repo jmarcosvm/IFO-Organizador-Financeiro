@@ -31,6 +31,7 @@ public class ApiCliente {
     private String token;
     private MvcResult ultimaResposta;
     private JsonNode ultimoCorpo;
+    private String ultimoTexto;
     private Map<String, Short> categorias;
 
     @Autowired
@@ -94,10 +95,19 @@ public class ApiCliente {
         enviar(HttpMethod.DELETE, uri, null);
     }
 
+    // Download do CSV (a rota só responde a Accept: text/csv); o texto fica em texto()
+    public void getCsv(String uri) {
+        executar(HttpMethod.GET, uri, null, new MediaType("text", "csv"));
+    }
+
     public void enviar(HttpMethod metodo, String uri, Object corpo) {
+        executar(metodo, uri, corpo, MediaType.APPLICATION_JSON);
+    }
+
+    private void executar(HttpMethod metodo, String uri, Object corpo, MediaType aceita) {
         try {
             MockHttpServletRequestBuilder requisicao = MockMvcRequestBuilders.request(metodo, uri)
-                    .accept(MediaType.APPLICATION_JSON);
+                    .accept(aceita);
             if (token != null) {
                 requisicao.header("Authorization", "Bearer " + token);
             }
@@ -105,8 +115,10 @@ public class ApiCliente {
                 requisicao.contentType(MediaType.APPLICATION_JSON).content(json.writeValueAsString(corpo));
             }
             ultimaResposta = mockMvc.perform(requisicao).andReturn();
-            String texto = ultimaResposta.getResponse().getContentAsString(StandardCharsets.UTF_8);
-            ultimoCorpo = texto.isBlank() ? json.nullNode() : json.readTree(texto);
+            ultimoTexto = ultimaResposta.getResponse().getContentAsString(StandardCharsets.UTF_8);
+            String tipo = ultimaResposta.getResponse().getContentType();
+            boolean ehJson = tipo != null && tipo.startsWith(MediaType.APPLICATION_JSON_VALUE);
+            ultimoCorpo = ehJson && !ultimoTexto.isBlank() ? json.readTree(ultimoTexto) : json.nullNode();
         } catch (Exception e) {
             throw new IllegalStateException("Falha ao chamar " + metodo + " " + uri, e);
         }
@@ -120,6 +132,11 @@ public class ApiCliente {
 
     public JsonNode corpo() {
         return ultimoCorpo;
+    }
+
+    // Corpo cru da última resposta (para o CSV, que não é JSON)
+    public String texto() {
+        return ultimoTexto;
     }
 
     // ---- ajudantes ----

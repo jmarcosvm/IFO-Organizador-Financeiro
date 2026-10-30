@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 
 // Gera e valida o token JWT (HS256). O "subject" é o id do usuário.
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class JwtService {
 
     private static final int TAMANHO_MINIMO_CHAVE = 32;
+    private static final String PREFIXO_SEGREDO_DE_EXEMPLO = "troque";
 
     private final SecretKey chave;
     private final Duration expiracao;
@@ -27,6 +29,11 @@ public class JwtService {
         byte[] bytes = segredo.getBytes(StandardCharsets.UTF_8);
         if (bytes.length < TAMANHO_MINIMO_CHAVE) {
             throw new IllegalStateException("JWT_SECRET precisa ter pelo menos " + TAMANHO_MINIMO_CHAVE + " caracteres.");
+        }
+        // O .env.example tem 53 caracteres e passaria na checagem de tamanho: sem isto, quem copiasse o
+        // exemplo sem trocar a chave rodaria com um segredo público no GitHub
+        if (segredo.toLowerCase(Locale.ROOT).startsWith(PREFIXO_SEGREDO_DE_EXEMPLO)) {
+            throw new IllegalStateException("JWT_SECRET ainda é o valor de exemplo do .env.example. Gere uma chave aleatória.");
         }
         this.chave = Keys.hmacShaKeyFor(bytes);
         this.expiracao = Duration.ofMinutes(expiracaoMinutos);
