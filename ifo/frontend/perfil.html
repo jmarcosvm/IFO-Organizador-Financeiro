@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil · IFO</title>
+    <!-- Aplica o tema salvo antes da pintura (evita "piscar"); ver js/tema.js -->
+    <script>
+      try {
+        var t = localStorage.getItem("ifo.tema");
+        if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
+  </head>
+  <body>
+    <a class="pular-conteudo" href="#conteudo">Ir para o conteúdo</a>
+    <header id="navbar" class="navbar"></header>
+
+    <main id="conteudo" class="conteudo">
+      <div class="cabecalho-pagina">
+        <h1>Meu perfil</h1>
+      </div>
+
+      <section class="cartao cartao-estreito">
+        <form id="form-perfil" class="formulario" novalidate>
+          <!-- Fica desabilitado até os dados chegarem da API -->
+          <fieldset id="dados-perfil" class="formulario conjunto" disabled>
+            <div class="campo">
+              <label for="nome">Nome</label>
+              <input class="entrada" type="text" id="nome" name="nome" autocomplete="name" required />
+            </div>
+
+            <div class="campo">
+              <label for="email">E-mail</label>
+              <input
+                class="entrada"
+                type="email"
+                id="email"
+                name="email"
+                autocomplete="email"
+                aria-describedby="ajuda-email"
+                readonly
+              />
+              <span id="ajuda-email" class="campo-ajuda">O e-mail não pode ser alterado.</span>
+            </div>
+
+            <div class="campo">
+              <label for="renda">Renda mensal (R$)</label>
+              <input
+                class="entrada"
+                type="number"
+                id="renda"
+                name="rendaMensal"
+                inputmode="decimal"
+                step="0.01"
+                min="0"
+                aria-describedby="ajuda-renda"
+                required
+              />
+              <span id="ajuda-renda" class="campo-ajuda">
+                A renda define o limite mensal de cada grupo no seu orçamento.
+              </span>
+            </div>
+
+            <button type="submit" class="btn btn-primario">Salvar alterações</button>
+          </fieldset>
+        </form>
+      </section>
+    </main>
+
+    <footer class="rodape">IFO · Inteligência Financeira Organizada · Projeto acadêmico FATEC Cotia</footer>
+
+    <script type="module" src="js/telas/perfil.js"></script>
+  </body>
+</html>

@@ -51,7 +51,7 @@ A V1 teve as Sprints 0–4. A refatoração continua a numeração com o prefixo
 - [x] Definir design tokens (cores, tipografia, espaçamento, raios) em variáveis CSS. *(Parte 1: `css/tokens.css`)*
 - [ ] Layout **mobile-first** (360 px) com breakpoints para tablet e desktop; menu adaptado para celular.
 - [ ] Reescrever `app.js` em módulos ES (`api.js`, `auth.js`, `ui.js` e um arquivo por tela).
-- [ ] Cliente de API com token e tratamento central de erros (401 volta ao login).
+- [x] Cliente de API com token e tratamento central de erros (401 volta ao login). *(Parte 2: `js/api.js`, `auth.js`, `sessao.js`)*
 - [ ] Telas: login, cadastro, dashboard, transações (filtro de mês), orçamento, metas, calculadora, perfil.
 - [ ] Formulário de transação: **categoria → (grupo exibido automaticamente) → descrição**.
 - [ ] Alerta de orçamento (faixa amarela/vermelha) no lançamento e no dashboard.

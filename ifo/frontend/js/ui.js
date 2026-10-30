@@ -96,7 +96,11 @@ export function limparErrosForm(form) {
   form.querySelectorAll(".campo-erro").forEach((no) => no.remove());
   form.querySelectorAll("[aria-invalid]").forEach((campo) => {
     campo.removeAttribute("aria-invalid");
-    campo.removeAttribute("aria-describedby");
+    // devolve a dica original (ex.: "Mínimo de 8 caracteres"), se havia
+    const original = campo.dataset.descricaoOriginal;
+    if (original) campo.setAttribute("aria-describedby", original);
+    else campo.removeAttribute("aria-describedby");
+    delete campo.dataset.descricaoOriginal;
   });
 }
 
@@ -113,8 +117,11 @@ export function mostrarErroForm(form, erro) {
     if (!campo) continue;
 
     const idErro = `erro-${nome}`;
+    const original = campo.getAttribute("aria-describedby") ?? "";
+    campo.dataset.descricaoOriginal = original;
     campo.setAttribute("aria-invalid", "true");
-    campo.setAttribute("aria-describedby", idErro);
+    // o leitor de tela lê a dica e depois o erro
+    campo.setAttribute("aria-describedby", `${original} ${idErro}`.trim());
     campo.closest(".campo")?.append(el("span", { id: idErro, class: "campo-erro" }, texto));
     primeiroComErro ??= campo;
   }
