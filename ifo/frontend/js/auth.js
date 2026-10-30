@@ -3,9 +3,8 @@
 import { post } from "./api.js";
 import { lerSessao, salvarSessao, limparSessao } from "./sessao.js";
 
-// Tela para onde o usuário vai depois de entrar. Passa a ser dashboard.html na Parte 3,
-// quando ela for refeita (hoje o dashboard ainda é o da V1).
-export const PAGINA_INICIAL = "perfil.html";
+// Tela para onde o usuário vai depois de entrar.
+export const PAGINA_INICIAL = "dashboard.html";
 const PAGINA_LOGIN = "index.html";
 
 export function usuarioAtual() {

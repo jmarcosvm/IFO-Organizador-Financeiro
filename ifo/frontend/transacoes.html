@@ -3,54 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IFO - Transações</title>
-    <link rel="stylesheet" href="css/estilo.css" />
+    <title>Transações · IFO</title>
+    <!-- Aplica o tema salvo antes da pintura (evita "piscar"); ver js/tema.js -->
+    <script>
+      try {
+        var t = localStorage.getItem("ifo.tema");
+        if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
   </head>
   <body>
-    <header class="header">
-      <nav class="navbar">
-        <div class="logo">IFO</div>
-        <ul class="menu">
-          <li><a href="dashboard.html">Dashboard</a></li>
-          <li><a href="transacoes.html" class="ativo">Transações</a></li>
-          <li><a href="metas.html">Metas</a></li>
-          <li><a href="orcamentos.html">Orçamentos</a></li>
-          <li><a href="investimentos.html">Investimentos</a></li>
-        </ul>
-        <div class="usuario" id="nome-usuario" onclick="logout()">Douglas</div>
-      </nav>
-    </header>
+    <a class="pular-conteudo" href="#conteudo">Ir para o conteúdo</a>
+    <header id="navbar" class="navbar"></header>
 
-    <main class="container">
-      <section class="card">
-        <div class="flex mb-3">
-          <h2>Transações</h2>
-          <button class="btn btn-success" onclick="mostrarFormNovaTransacao()">
-            + Nova Transação
-          </button>
+    <main id="conteudo" class="conteudo pilha">
+      <div class="cabecalho-pagina">
+        <h1>Transações</h1>
+        <div class="linha">
+          <button type="button" id="exportar-csv" class="btn btn-contorno">Exportar CSV</button>
+          <button type="button" id="nova-transacao" class="btn btn-primario">+ Nova transação</button>
         </div>
+      </div>
 
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Descrição</th>
-              <th>Tipo</th>
-              <th>Valor</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="tabela-transacoes">
-            <!-- Preenchido via JavaScript -->
-          </tbody>
-        </table>
+      <div id="filtro"></div>
+
+      <!-- Alerta de orçamento depois de lançar uma despesa (RF14) -->
+      <div id="area-alerta" role="status" aria-live="polite"></div>
+
+      <section class="cartao" aria-label="Lista de transações">
+        <div id="lista"></div>
       </section>
     </main>
 
-    <footer class="footer">
-      <p>IFO - Organizador Financeiro Inteligente © 2025 | Sprint 3</p>
-    </footer>
+    <footer class="rodape">IFO · Inteligência Financeira Organizada · Projeto acadêmico FATEC Cotia</footer>
 
-    <script src="js/app.js"></script>
+    <script type="module" src="js/telas/transacoes.js"></script>
   </body>
 </html>

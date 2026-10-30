@@ -20,9 +20,10 @@ export class ApiErro extends Error {
 const MENSAGEM_REDE = "Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.";
 const MENSAGEM_PADRAO = "Ocorreu um erro inesperado. Tente novamente.";
 
+// Envia e trata o erro (rede, 4xx/5xx, 401); devolve a Response quando deu certo.
 // publica: true -> rota sem login (/auth/*): não envia token e o 401 NÃO derruba a sessão
-async function requisicao(metodo, caminho, { corpo, publica = false } = {}) {
-  const cabecalhos = { Accept: "application/json" };
+async function enviar(metodo, caminho, { corpo, publica = false, aceita = "application/json" } = {}) {
+  const cabecalhos = { Accept: aceita };
   if (corpo !== undefined) cabecalhos["Content-Type"] = "application/json";
 
   const sessao = publica ? null : lerSessao();
@@ -39,9 +40,7 @@ async function requisicao(metodo, caminho, { corpo, publica = false } = {}) {
     throw new ApiErro(0, MENSAGEM_REDE);
   }
 
-  if (resposta.ok) {
-    return resposta.status === 204 ? null : resposta.json();
-  }
+  if (resposta.ok) return resposta;
 
   const dados = await resposta.json().catch(() => null);
   const erro = new ApiErro(resposta.status, dados?.mensagem || MENSAGEM_PADRAO, dados?.campos ?? null);
@@ -52,6 +51,11 @@ async function requisicao(metodo, caminho, { corpo, publica = false } = {}) {
     window.location.replace("index.html?sessao=expirada");
   }
   throw erro;
+}
+
+async function requisicao(metodo, caminho, opcoes) {
+  const resposta = await enviar(metodo, caminho, opcoes);
+  return resposta.status === 204 ? null : resposta.json();
 }
 
 // Monta "?mes=10&ano=2026" ignorando o que for vazio
@@ -70,3 +74,22 @@ export const post = (caminho, corpo, opcoes) => requisicao("POST", caminho, { co
 export const put = (caminho, corpo, opcoes) => requisicao("PUT", caminho, { corpo, ...opcoes });
 export const patch = (caminho, corpo, opcoes) => requisicao("PATCH", caminho, { corpo, ...opcoes });
 export const del = (caminho, opcoes) => requisicao("DELETE", caminho, opcoes);
+
+// Baixa um arquivo protegido (ex.: CSV). Um link comum não serviria: o navegador
+// não envia o token, então buscamos com fetch e entregamos o conteúdo como Blob.
+export async function baixarArquivo(caminho, parametros) {
+  const resposta = await enviar("GET", comParametros(caminho, parametros), { aceita: "*/*" });
+  const blob = await resposta.blob();
+
+  // Content-Disposition: attachment; filename="ifo-transacoes-2026-10.csv"
+  const nome = /filename="?([^";]+)"?/.exec(resposta.headers.get("Content-Disposition") ?? "")?.[1] ?? "download";
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = nome;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
