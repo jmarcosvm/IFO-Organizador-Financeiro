@@ -3,73 +3,61 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IFO - Login</title>
-    <link rel="stylesheet" href="css/estilo.css" />
+    <title>Entrar · IFO</title>
+    <!-- Aplica o tema salvo antes da pintura (evita "piscar"); ver js/tema.js -->
+    <script>
+      try {
+        var t = localStorage.getItem("ifo.tema");
+        if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
   </head>
   <body>
-    <div class="login-container">
-      <div class="login-box">
-        <h1>IFO</h1>
-        <p>Organização Financeira Inteligente</p>
+    <a class="pular-conteudo" href="#conteudo">Ir para o conteúdo</a>
 
-        <form id="form-login">
-          <div class="form-group">
-            <label for="email">Email</label>
+    <div class="autenticacao">
+      <main id="conteudo" class="autenticacao-caixa">
+        <h1>IFO</h1>
+        <p class="subtitulo">Inteligência Financeira Organizada</p>
+
+        <form id="form-login" class="formulario" novalidate>
+          <div class="campo">
+            <label for="email">E-mail</label>
             <input
+              class="entrada"
               type="email"
               id="email"
-              class="form-control"
-              placeholder="seu@email.com"
+              name="email"
+              autocomplete="email"
+              placeholder="voce@email.com"
               required
             />
           </div>
 
-          <div class="form-group">
+          <div class="campo">
             <label for="senha">Senha</label>
             <input
+              class="entrada"
               type="password"
               id="senha"
-              class="form-control"
-              placeholder="********"
+              name="senha"
+              autocomplete="current-password"
               required
             />
           </div>
 
-          <button type="submit" class="btn btn-primary" style="width: 100%">
-            ENTRAR
-          </button>
+          <button type="submit" class="btn btn-primario btn-bloco">Entrar</button>
         </form>
 
-        <p class="mt-3 text-center">
-          Não tem conta?
-          <a href="cadastro.html" style="color: #2563eb">Cadastre-se</a>
+        <p class="texto-centro" style="margin-top: var(--espaco-5)">
+          Não tem conta? <a href="cadastro.html">Cadastre-se</a>
         </p>
-
-        <div class="alert alert-info mt-3">
-          <strong>Demo:</strong> douglas@ifo.teste / 123456
-        </div>
-      </div>
+      </main>
     </div>
 
-    <script src="js/app.js"></script>
-    <script>
-      document
-        .getElementById("form-login")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
-
-          const email = document.getElementById("email").value;
-          const senha = document.getElementById("senha").value;
-
-          const usuario = await loginUsuario(email, senha);
-
-          if (usuario) {
-            localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
-            window.location.href = "dashboard.html";
-          } else {
-            alert("Email ou senha inválidos!");
-          }
-        });
-    </script>
+    <script type="module" src="js/telas/login.js"></script>
   </body>
 </html>

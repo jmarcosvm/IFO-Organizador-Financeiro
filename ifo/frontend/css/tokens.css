@@ -1,0 +1,189 @@
+/* ============================================
+   IFO - Design tokens (R4, ADR-013/ADR-014)
+   Toda cor, tamanho e raio do sistema nasce aqui.
+   Tema escuro: [data-theme="dark"] (escolha do usuário) ou
+   prefers-color-scheme (padrão do sistema, RN19).
+   Pares texto/fundo conferidos para contraste AA (RNF08/RNF16).
+   ============================================ */
+
+:root {
+  color-scheme: light;
+
+  /* Superfícies e texto */
+  --cor-fundo: #f4f6fa;
+  --cor-superficie: #ffffff;
+  --cor-superficie-2: #eef1f7;
+  --cor-borda: #c9d0dd;
+  --cor-texto: #1a2230;
+  --cor-texto-suave: #4a566b;
+
+  /* Marca e ações */
+  --cor-primaria: #1d4ed8;
+  --cor-primaria-hover: #1e40af;
+  --cor-sobre-primaria: #ffffff;
+  --cor-perigo: #b91c1c;
+  --cor-perigo-hover: #991b1b;
+  --cor-sobre-perigo: #ffffff;
+  --cor-foco: #1d4ed8;
+
+  /* Dinheiro */
+  --cor-receita: #047857;
+  --cor-despesa: #b91c1c;
+
+  /* Faixas de aviso (fundo + texto + borda) */
+  --faixa-info-fundo: #dbeafe;
+  --faixa-info-texto: #1e3a8a;
+  --faixa-info-borda: #1d4ed8;
+  --faixa-sucesso-fundo: #d1fae5;
+  --faixa-sucesso-texto: #064e3b;
+  --faixa-sucesso-borda: #047857;
+  --faixa-atencao-fundo: #fef3c7;
+  --faixa-atencao-texto: #78350f;
+  --faixa-atencao-borda: #b45309;
+  --faixa-perigo-fundo: #fee2e2;
+  --faixa-perigo-texto: #7f1d1d;
+  --faixa-perigo-borda: #b91c1c;
+
+  /* Níveis do orçamento (barras e selos) */
+  --cor-nivel-ok: #047857;
+  --cor-nivel-atencao: #b45309;
+  --cor-nivel-estouro: #b91c1c;
+
+  /* Grupos (pizza e legendas) */
+  --cor-grupo-necessidades: #1d4ed8;
+  --cor-grupo-lazer: #b45309;
+  --cor-grupo-investimentos: #047857;
+
+  /* Tipografia */
+  --fonte: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --texto-xs: 0.8125rem;
+  --texto-sm: 0.9375rem;
+  --texto-md: 1rem;
+  --texto-lg: 1.25rem;
+  --texto-xl: 1.625rem;
+  --texto-destaque: 2rem;
+  --peso-normal: 400;
+  --peso-medio: 600;
+  --peso-forte: 700;
+  --altura-linha: 1.5;
+
+  /* Espaçamento (escala de 4 px) */
+  --espaco-1: 0.25rem;
+  --espaco-2: 0.5rem;
+  --espaco-3: 0.75rem;
+  --espaco-4: 1rem;
+  --espaco-5: 1.5rem;
+  --espaco-6: 2rem;
+  --espaco-7: 3rem;
+
+  /* Formas */
+  --raio-sm: 6px;
+  --raio-md: 10px;
+  --raio-lg: 16px;
+  --raio-pilula: 999px;
+  --sombra-1: 0 1px 2px rgb(15 23 42 / 0.08), 0 1px 3px rgb(15 23 42 / 0.06);
+  --sombra-2: 0 10px 30px rgb(15 23 42 / 0.18);
+
+  /* Medidas de layout */
+  --toque-minimo: 44px;
+  --largura-conteudo: 1120px;
+  --altura-navbar: 56px;
+}
+
+/* Tema escuro escolhido pelo usuário */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --cor-fundo: #0e131d;
+  --cor-superficie: #172030;
+  --cor-superficie-2: #1f2a3f;
+  --cor-borda: #34425c;
+  --cor-texto: #e8ecf4;
+  --cor-texto-suave: #a9b4c8;
+
+  --cor-primaria: #7aa5ff;
+  --cor-primaria-hover: #9bbcff;
+  --cor-sobre-primaria: #0a1020;
+  --cor-perigo: #ff8f8f;
+  --cor-perigo-hover: #ffadad;
+  --cor-sobre-perigo: #1f0808;
+  --cor-foco: #a9c4ff;
+
+  --cor-receita: #4ade80;
+  --cor-despesa: #ff9a9a;
+
+  --faixa-info-fundo: #142a52;
+  --faixa-info-texto: #cfe0ff;
+  --faixa-info-borda: #7aa5ff;
+  --faixa-sucesso-fundo: #0f3325;
+  --faixa-sucesso-texto: #c2f5d8;
+  --faixa-sucesso-borda: #4ade80;
+  --faixa-atencao-fundo: #3a2c08;
+  --faixa-atencao-texto: #fde9a8;
+  --faixa-atencao-borda: #fbbf24;
+  --faixa-perigo-fundo: #401418;
+  --faixa-perigo-texto: #ffd0d0;
+  --faixa-perigo-borda: #ff8f8f;
+
+  --cor-nivel-ok: #4ade80;
+  --cor-nivel-atencao: #fbbf24;
+  --cor-nivel-estouro: #ff8f8f;
+
+  --cor-grupo-necessidades: #7aa5ff;
+  --cor-grupo-lazer: #fbbf24;
+  --cor-grupo-investimentos: #4ade80;
+
+  --sombra-1: 0 1px 2px rgb(0 0 0 / 0.5);
+  --sombra-2: 0 10px 30px rgb(0 0 0 / 0.6);
+}
+
+/* Padrão do sistema, quando o usuário não escolheu nada (RN19).
+   Mesmos valores do bloco acima: CSS não permite "reaproveitar" um seletor
+   dentro de uma media query, então a repetição é proposital. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --cor-fundo: #0e131d;
+    --cor-superficie: #172030;
+    --cor-superficie-2: #1f2a3f;
+    --cor-borda: #34425c;
+    --cor-texto: #e8ecf4;
+    --cor-texto-suave: #a9b4c8;
+
+    --cor-primaria: #7aa5ff;
+    --cor-primaria-hover: #9bbcff;
+    --cor-sobre-primaria: #0a1020;
+    --cor-perigo: #ff8f8f;
+    --cor-perigo-hover: #ffadad;
+    --cor-sobre-perigo: #1f0808;
+    --cor-foco: #a9c4ff;
+
+    --cor-receita: #4ade80;
+    --cor-despesa: #ff9a9a;
+
+    --faixa-info-fundo: #142a52;
+    --faixa-info-texto: #cfe0ff;
+    --faixa-info-borda: #7aa5ff;
+    --faixa-sucesso-fundo: #0f3325;
+    --faixa-sucesso-texto: #c2f5d8;
+    --faixa-sucesso-borda: #4ade80;
+    --faixa-atencao-fundo: #3a2c08;
+    --faixa-atencao-texto: #fde9a8;
+    --faixa-atencao-borda: #fbbf24;
+    --faixa-perigo-fundo: #401418;
+    --faixa-perigo-texto: #ffd0d0;
+    --faixa-perigo-borda: #ff8f8f;
+
+    --cor-nivel-ok: #4ade80;
+    --cor-nivel-atencao: #fbbf24;
+    --cor-nivel-estouro: #ff8f8f;
+
+    --cor-grupo-necessidades: #7aa5ff;
+    --cor-grupo-lazer: #fbbf24;
+    --cor-grupo-investimentos: #4ade80;
+
+    --sombra-1: 0 1px 2px rgb(0 0 0 / 0.5);
+    --sombra-2: 0 10px 30px rgb(0 0 0 / 0.6);
+  }
+}
