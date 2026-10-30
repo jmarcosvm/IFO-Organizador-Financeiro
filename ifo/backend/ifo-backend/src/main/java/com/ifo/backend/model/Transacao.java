@@ -28,6 +28,11 @@ public class Transacao {
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
 
+    // Preenchido só nas transações geradas por uma recorrência; vira nulo se ela for excluída (RN16)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_recorrencia")
+    private TransacaoRecorrente recorrencia;
+
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal valor;
 
