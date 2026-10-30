@@ -4,7 +4,7 @@
 
 import { ApiErro, get, post, put } from "../api.js";
 import { hojeISO, nomeGrupo } from "../formato.js";
-import { comBotaoOcupado, el, limparErrosForm, mostrarErroForm, toast } from "../ui.js";
+import { comBotaoOcupado, el, limparErrosForm, mostrarErroForm, numeroOuNulo, toast } from "../ui.js";
 import { abrirModal } from "./modal.js";
 
 const ORDEM_GRUPOS = ["NECESSIDADES", "LAZER", "INVESTIMENTOS"];
@@ -34,9 +34,6 @@ function criarOpcoes(categorias) {
     ...grupos.map((g) => el("optgroup", { label: `Despesas · ${nomeGrupo(g.grupo)}` }, g.categorias.map(opcao))),
   ];
 }
-
-// "" -> null, para o backend responder "obrigatório" em vez de interpretar 0
-const comoNumero = (texto) => (texto === "" ? null : Number(texto));
 
 // transacao: objeto da API quando for edição. aoSalvar recebe { transacao, alerta }.
 export async function abrirFormTransacao({ transacao = null, aoSalvar }) {
@@ -124,8 +121,8 @@ export async function abrirFormTransacao({ transacao = null, aoSalvar }) {
     limparErrosForm(form);
 
     const corpo = {
-      idCategoria: comoNumero(selectCategoria.value),
-      valor: comoNumero(campoValor.value),
+      idCategoria: numeroOuNulo(selectCategoria.value),
+      valor: numeroOuNulo(campoValor.value),
       data: campoData.value || null,
       descricao: campoDescricao.value.trim() || null,
     };

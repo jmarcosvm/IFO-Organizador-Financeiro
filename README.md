@@ -15,7 +15,7 @@ Projeto acadêmico da **FATEC Cotia** — Desenvolvimento de Software Multiplata
 - Filtro por mês e resumo (receitas, despesas, saldo) com gráfico de pizza simples
 - **Orçamento 50/30/20** com percentuais editáveis e **alerta de estouro** (atenção a partir de 80%)
 - Metas financeiras com aportes e barra de progresso
-- Calculadora de investimentos (juros simples e compostos)
+- Simulador de investimentos (juros simples e compostos)
 - **Despesas recorrentes** (ex.: internet, luz) geradas automaticamente todo mês
 - **Exportar CSV** das transações do mês
 - **Dark mode** (tema claro/escuro)

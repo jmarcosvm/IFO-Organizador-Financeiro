@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orçamento · IFO</title>
+    <!-- Aplica o tema salvo antes da pintura (evita "piscar"); ver js/tema.js -->
+    <script>
+      try {
+        var t = localStorage.getItem("ifo.tema");
+        if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
+  </head>
+  <body>
+    <a class="pular-conteudo" href="#conteudo">Ir para o conteúdo</a>
+    <header id="navbar" class="navbar"></header>
+
+    <main id="conteudo" class="conteudo pilha">
+      <div class="cabecalho-pagina">
+        <h1>Orçamento</h1>
+      </div>
+
+      <section class="cartao" aria-labelledby="titulo-distribuicao">
+        <h2 id="titulo-distribuicao">Distribuição da renda</h2>
+        <div id="info-renda"></div>
+
+        <form id="form-orcamento" class="formulario" novalidate>
+          <div class="campos-em-linha">
+            <div class="campo">
+              <label for="orc-necessidades">Necessidades (%)</label>
+              <input class="entrada" type="number" id="orc-necessidades" name="necessidades" inputmode="decimal" step="0.01" min="0" max="100" />
+            </div>
+            <div class="campo">
+              <label for="orc-lazer">Lazer (%)</label>
+              <input class="entrada" type="number" id="orc-lazer" name="lazer" inputmode="decimal" step="0.01" min="0" max="100" />
+            </div>
+            <div class="campo">
+              <label for="orc-investimentos">Investimentos (%)</label>
+              <input class="entrada" type="number" id="orc-investimentos" name="investimentos" inputmode="decimal" step="0.01" min="0" max="100" />
+            </div>
+          </div>
+
+          <!-- Prévia da soma: precisa fechar exatamente 100% (RN05) -->
+          <div id="soma-percentuais" class="faixa faixa-atencao" role="status" aria-live="polite"></div>
+
+          <div class="linha">
+            <button type="submit" class="btn btn-primario">Salvar orçamento</button>
+            <button type="button" id="restaurar-padrao" class="btn btn-contorno">Restaurar 50/30/20</button>
+          </div>
+        </form>
+      </section>
+
+      <section aria-labelledby="titulo-uso" class="pilha">
+        <h2 id="titulo-uso">Uso no mês</h2>
+        <div id="filtro"></div>
+        <div id="status-grupos" class="grade grade-3"></div>
+      </section>
+    </main>
+
+    <footer class="rodape">IFO · Inteligência Financeira Organizada · Projeto acadêmico FATEC Cotia</footer>
+
+    <script type="module" src="js/telas/orcamento.js"></script>
+  </body>
+</html>

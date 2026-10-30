@@ -2,7 +2,7 @@
 
 ## 1. Decisões do modelo
 
-- **Sai:** `conta_carteira` e `investimento` (a calculadora não persiste nada).
+- **Sai:** `conta_carteira` e `investimento` (o simulador não persiste nada).
 - **Categoria é fixa e global** (sem `id_usuario`), carregada por migration. Ela carrega o **tipo** e o **grupo**.
 - **Transação não guarda o tipo nem o grupo**: ambos vêm da categoria (evita inconsistência, regra RN02).
 - **Orçamento** é a configuração de 3 percentuais por usuário (um por grupo). O limite em R$ é calculado: `renda × percentual`.
@@ -253,4 +253,4 @@ INSERT INTO categoria (nome, tipo, grupo) VALUES
 | `TransacaoRecorrente` | `@ManyToOne Categoria`; `ultimaCompetencia` (`LocalDate`) controla a geração; `ativa` pausa o modelo |
 | `MetaFinanceira` | `valorAtual` iniciando em `BigDecimal.ZERO` |
 
-Enums Java: `TipoCategoria {RECEITA, DESPESA}` e `GrupoOrcamento {NECESSIDADES, LAZER, INVESTIMENTOS}`. Os enums antigos `TipoConta`, `TipoJuros` (persistido), `TipoOrcamento` e o `TipoCategoria` com 8 valores da V1 são removidos; `TipoJuros {SIMPLES, COMPOSTO}` continua existindo apenas como parâmetro da calculadora.
+Enums Java: `TipoCategoria {RECEITA, DESPESA}` e `GrupoOrcamento {NECESSIDADES, LAZER, INVESTIMENTOS}`. Os enums antigos `TipoConta`, `TipoJuros` (persistido), `TipoOrcamento` e o `TipoCategoria` com 8 valores da V1 são removidos; `TipoJuros {SIMPLES, COMPOSTO}` continua existindo apenas como parâmetro do simulador.

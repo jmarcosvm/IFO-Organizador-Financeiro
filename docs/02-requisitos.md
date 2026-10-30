@@ -41,7 +41,7 @@ Prioridade segue MoSCoW: **M** (Must), **S** (Should), **C** (Could).
 | RF16 | O usuário registra aportes na meta (atualiza o valor atual). | M |
 | RF17 | O sistema exibe barra de progresso (%) e marca a meta como concluída ao atingir o objetivo. | M |
 
-### Calculadora de investimentos
+### Simulador de investimentos
 
 | ID | Requisito | Prior. |
 |---|---|---|
@@ -95,7 +95,7 @@ Prioridade segue MoSCoW: **M** (Must), **S** (Should), **C** (Could).
 | RN11 | Um usuário só lê, altera ou exclui dados que lhe pertencem (transações e metas). |
 | RN12 | Categorias são **fixas** (carregadas por migration) e iguais para todos os usuários. |
 
-### Fórmulas da calculadora (RN13)
+### Fórmulas do simulador (RN13)
 
 Seja `P` a aplicação inicial, `PMT` o aporte mensal (feito no **fim** de cada mês), `i` a taxa mensal em decimal (`taxa% ÷ 100`) e `n` o prazo em meses.
 
@@ -141,7 +141,7 @@ Exemplos de uso (campo **descrição** livre):
 | Transações | RF05–RF10 | RN01–RN04, RN12 |
 | Orçamento e alerta | RF11–RF14 | RN05–RN08 |
 | Metas | RF15–RF17 | RN09 |
-| Calculadora | RF18–RF19 | RN13 |
+| Simulador | RF18–RF19 | RN13 |
 | Recorrências | RF20 | RN14–RN17 |
 | Exportar CSV | RF21 | RN18 |
 | Dark mode | RF22 | RN19 |

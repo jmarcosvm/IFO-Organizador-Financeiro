@@ -21,7 +21,7 @@ flowchart LR
     uc9(["Exibir alerta de estouro"])
     uc10(["Gerenciar metas"])
     uc11(["Registrar aporte na meta"])
-    uc12(["Simular investimento<br/>(calculadora)"])
+    uc12(["Simular investimento<br/>(simulador)"])
     uc13(["Gerenciar despesas<br/>recorrentes"])
     uc14(["Exportar transações<br/>em CSV"])
     uc15(["Alternar tema<br/>claro/escuro"])
@@ -139,7 +139,7 @@ classDiagram
         +status(usuarioId, mes, ano)
     }
 
-    class CalculadoraInvestimentoService {
+    class SimuladorService {
         +simular(entrada)
     }
 
@@ -165,7 +165,7 @@ classDiagram
     Categoria ..> GrupoOrcamento
     Orcamento ..> GrupoOrcamento
     TransacaoService ..> OrcamentoService : consulta status
-    CalculadoraInvestimentoService ..> TipoJuros
+    SimuladorService ..> TipoJuros
 ```
 
 > `ResumoMensal`, `ResultadoSimulacao`, `StatusOrcamento` e `TransacaoResposta` são **DTOs** (não são tabelas). Não existe classe de conta/carteira nem de investimento persistido.
@@ -237,16 +237,16 @@ sequenceDiagram
     actor J as João
     participant FE as Frontend
     participant IC as InvestimentoController
-    participant CS as CalculadoraInvestimentoService
+    participant SS as SimuladorService
 
     J->>FE: Informa aporte, taxa, prazo e tipo de juros
     FE->>IC: POST /api/investimentos/simular
-    IC->>CS: simular(entrada)
-    CS->>CS: Aplica fórmula (simples ou composto)
-    CS-->>IC: montante, total investido, rendimento, evolução
+    IC->>SS: simular(entrada)
+    SS->>SS: Aplica fórmula (simples ou composto)
+    SS-->>IC: montante, total investido, rendimento, evolução
     IC-->>FE: 200 { resultado }
     FE-->>J: Exibe resultado e tabela mês a mês
-    Note over IC,CS: Nada é gravado no banco
+    Note over IC,SS: Nada é gravado no banco
 ```
 
 ## 4. Diagramas de processo (BPMN simplificado)
@@ -373,7 +373,7 @@ flowchart TD
     classDef fim fill:#FECACA,stroke:#DC2626,color:#111;
 ```
 
-### 4.5 Processo 5 — Calculadora de investimentos
+### 4.5 Processo 5 — Simulador de investimentos
 
 ```mermaid
 flowchart TD
