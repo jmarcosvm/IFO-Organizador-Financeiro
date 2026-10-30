@@ -55,3 +55,9 @@ export function nomeNivel(nivel) {
 export function nomeTipo(tipo) {
   return NOMES_TIPO[tipo] ?? tipo;
 }
+
+// Taxa de juros: até 4 casas (a API aceita 0,0001%), ao contrário de percentual(), que arredonda em 1
+const formatadorTaxa = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 4 });
+export function taxa(valor) {
+  return `${formatadorTaxa.format(valor ?? 0)}%`;
+}

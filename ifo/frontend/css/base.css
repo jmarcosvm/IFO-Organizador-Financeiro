@@ -163,3 +163,5 @@ textarea {
 .titulo-pequeno { font-size: var(--texto-sm); font-weight: var(--peso-medio); color: var(--cor-texto-suave); }
 .titulo-secao { margin-bottom: var(--espaco-3); }
 .valor-medio { font-size: var(--texto-lg); font-weight: var(--peso-forte); overflow-wrap: anywhere; }
+
+.espaco-topo { margin-top: var(--espaco-3); }

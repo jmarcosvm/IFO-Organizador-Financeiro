@@ -1,11 +1,13 @@
 import { ApiErro, get } from "../api.js";
 import { criarAlertaDeStatus, mostrarAlerta, NIVEIS_DE_ALERTA } from "../componentes/alertaOrcamento.js";
 import { abrirFormTransacao } from "../componentes/formTransacao.js";
+import { criarCartaoGrupo } from "../componentes/cartaoGrupo.js";
+import { ordenarMetas, textoPrazo } from "../componentes/cartaoMeta.js";
 import { criarPizza } from "../componentes/pizza.js";
 import { criarProgresso } from "../componentes/progresso.js";
 import { criarSeletorMes, lerPeriodo } from "../componentes/seletorMes.js";
 import { criarTabelaTransacoes } from "../componentes/tabelaTransacoes.js";
-import { dataBR, moeda, nomeGrupo, nomeNivel, percentual } from "../formato.js";
+import { moeda, percentual } from "../formato.js";
 import { iniciarTela } from "../pagina.js";
 import { el, estadoVazio, toast } from "../ui.js";
 
@@ -16,49 +18,8 @@ function cartaoValor(titulo, valor, classe = "") {
   return el("section", { class: "cartao" }, el("h2", { class: "titulo-pequeno" }, titulo), el("p", { class: `valor-destaque ${classe}` }, moeda(valor)));
 }
 
-// Um cartão por grupo do orçamento (RF13). limite/percentualUsado vêm null sem renda (RN06)
-function cartaoGrupo(status) {
-  const nome = nomeGrupo(status.grupo);
-  const comLimite = status.limite != null && status.percentualUsado != null;
-
-  const filhos = [
-    el(
-      "div",
-      { class: "linha linha-entre" },
-      el("h3", {}, nome),
-      comLimite && el("span", { class: `selo selo-${status.nivel.toLowerCase()}` }, nomeNivel(status.nivel)),
-    ),
-    el("p", { class: "valor-medio" }, moeda(status.gasto)),
-  ];
-
-  if (comLimite) {
-    filhos.push(
-      criarProgresso({
-        percentual: status.percentualUsado,
-        nivel: status.nivel,
-        rotulo: `${nome}: ${percentual(status.percentualUsado)} do limite usado`,
-      }),
-      el(
-        "p",
-        { class: "texto-suave texto-pequeno" },
-        `${percentual(status.percentualUsado)} de ${moeda(status.limite)} (${percentual(status.percentual)} da renda)`,
-      ),
-    );
-  } else {
-    filhos.push(el("p", { class: "texto-suave texto-pequeno" }, "Sem limite definido para este mês."));
-  }
-  return el("article", { class: "cartao" }, filhos);
-}
-
-// Meta ainda não concluída com o prazo mais próximo; se todas estiverem concluídas, a mais recente
-function metaEmDestaque(metas) {
-  const porPrazo = (a, b) => a.prazo.localeCompare(b.prazo);
-  const abertas = metas.filter((m) => !m.concluida).sort(porPrazo);
-  return abertas[0] ?? metas.sort(porPrazo).at(-1) ?? null;
-}
-
 function cartaoMeta(metas) {
-  const meta = metaEmDestaque(metas);
+  const meta = ordenarMetas(metas)[0] ?? null; // aberta com prazo mais próximo
   const cabecalho = el(
     "div",
     { class: "linha linha-entre" },
@@ -77,7 +38,7 @@ function cartaoMeta(metas) {
       "p",
       { class: "texto-suave texto-pequeno" },
       `${moeda(meta.valorAtual)} de ${moeda(meta.valorObjetivo)} · ${percentual(meta.progresso)}`,
-      meta.concluida ? " · Concluída" : ` · Prazo ${dataBR(meta.prazo)}`,
+      meta.concluida ? " · Concluída" : ` · ${textoPrazo(meta)}`,
     ),
   );
 }
@@ -120,7 +81,7 @@ function iniciar() {
         "section",
         { "aria-labelledby": "titulo-orcamento" },
         el("h2", { id: "titulo-orcamento", class: "titulo-secao" }, "Orçamento 50/30/20"),
-        el("div", { class: "grade grade-3" }, status.map(cartaoGrupo)),
+        el("div", { class: "grade grade-3" }, status.map(criarCartaoGrupo)),
       ),
 
       el(

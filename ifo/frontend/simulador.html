@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulador · IFO</title>
+    <!-- Aplica o tema salvo antes da pintura (evita "piscar"); ver js/tema.js -->
+    <script>
+      try {
+        var t = localStorage.getItem("ifo.tema");
+        if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
+  </head>
+  <body>
+    <a class="pular-conteudo" href="#conteudo">Ir para o conteúdo</a>
+    <header id="navbar" class="navbar"></header>
+
+    <main id="conteudo" class="conteudo coluna-central pilha">
+      <div class="cabecalho-pagina">
+        <h1>Simulador de investimentos</h1>
+      </div>
+
+      <section class="cartao" aria-labelledby="titulo-simulacao">
+        <h2 id="titulo-simulacao">Simulação</h2>
+        <form id="form-simulador" class="formulario" novalidate>
+          <div class="campo">
+            <label for="sim-inicial">Aplicação inicial (R$)</label>
+            <input class="entrada" type="number" id="sim-inicial" name="aplicacaoInicial" inputmode="decimal" step="0.01" min="0" value="0" aria-describedby="ajuda-inicial" />
+            <span id="ajuda-inicial" class="campo-ajuda">Opcional. Deixe em branco se começar do zero.</span>
+          </div>
+
+          <div class="campo">
+            <label for="sim-mensal">Aporte mensal (R$)</label>
+            <input class="entrada" type="number" id="sim-mensal" name="valorMensal" inputmode="decimal" step="0.01" min="0" value="300" aria-describedby="ajuda-mensal" />
+            <span id="ajuda-mensal" class="campo-ajuda">Depositado no fim de cada mês.</span>
+          </div>
+
+          <div class="campo">
+            <label for="sim-taxa">Taxa de juros (% ao mês)</label>
+            <input class="entrada" type="number" id="sim-taxa" name="taxaMensal" inputmode="decimal" step="any" min="0" max="100" value="1" />
+          </div>
+
+          <div class="campo">
+            <label for="sim-meses">Prazo (meses)</label>
+            <input class="entrada" type="number" id="sim-meses" name="tempoMeses" inputmode="numeric" step="1" min="1" max="1200" value="12" aria-describedby="ajuda-meses" />
+            <span id="ajuda-meses" class="campo-ajuda">De 1 a 1200 meses.</span>
+          </div>
+
+          <div class="campo">
+            <label for="sim-tipo">Tipo de juros</label>
+            <select class="entrada" id="sim-tipo" name="tipoJuros">
+              <option value="COMPOSTO" selected>Juros compostos</option>
+              <option value="SIMPLES">Juros simples</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primario">Calcular</button>
+        </form>
+        <p class="campo-ajuda espaco-topo">A simulação não é salva: nada fica registrado na sua conta.</p>
+      </section>
+
+      <section id="resultado" class="pilha" aria-live="polite"></section>
+    </main>
+
+    <footer class="rodape">IFO · Inteligência Financeira Organizada · Projeto acadêmico FATEC Cotia</footer>
+
+    <script type="module" src="js/telas/simulador.js"></script>
+  </body>
+</html>

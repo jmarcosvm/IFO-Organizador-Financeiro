@@ -10,7 +10,7 @@ const LINKS = [
   { id: "transacoes", texto: "Transações", href: "transacoes.html" },
   { id: "orcamento", texto: "Orçamento", href: "orcamento.html" },
   { id: "metas", texto: "Metas", href: "metas.html" },
-  { id: "calculadora", texto: "Calculadora", href: "calculadora.html" },
+  { id: "simulador", texto: "Simulador", href: "simulador.html" },
   { id: "recorrencias", texto: "Recorrências", href: "recorrencias.html" },
   { id: "perfil", texto: "Perfil", href: "perfil.html" },
 ];

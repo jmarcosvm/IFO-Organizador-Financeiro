@@ -451,6 +451,9 @@ dialog.modal h2 { margin-bottom: var(--espaco-3); }
 
 .cartao-estreito { max-width: 32rem; }
 
+/* Página de conteúdo estreito e centralizado (ex.: simulador): título, formulário e resultado na mesma coluna */
+.conteudo.coluna-central { max-width: 48rem; }
+
 /* ---------- Seletor de mês ---------- */
 
 .seletor-mes { display: flex; flex-wrap: wrap; gap: var(--espaco-2); }
@@ -477,3 +480,17 @@ dialog.modal h2 { margin-bottom: var(--espaco-3); }
 .legenda { display: flex; flex-direction: column; gap: var(--espaco-2); padding: 0; list-style: none; }
 .legenda-item { display: flex; align-items: center; gap: var(--espaco-2); font-size: var(--texto-sm); }
 .legenda-cor { flex-shrink: 0; width: 1rem; height: 1rem; border-radius: var(--raio-sm); }
+
+.acoes-inicio { justify-content: flex-start; margin-top: var(--espaco-3); }
+
+/* ---------- Resumo da soma dos percentuais (orçamento) ---------- */
+
+.campos-em-linha { display: grid; gap: var(--espaco-4); grid-template-columns: 1fr; }
+
+@media (min-width: 768px) {
+  .campos-em-linha { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ---------- Evolução mês a mês (simulador) ---------- */
+
+details.evolucao > summary { cursor: pointer; font-weight: var(--peso-medio); padding: var(--espaco-2) 0; }

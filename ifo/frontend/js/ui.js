@@ -137,6 +137,11 @@ export function mostrarErroForm(form, erro) {
   if (!primeiroComErro) banner.scrollIntoView({ block: "nearest" });
 }
 
+// Campo numérico vazio vira null, para o backend responder "obrigatório" em vez de interpretar 0
+export function numeroOuNulo(texto) {
+  return texto === "" ? null : Number(texto);
+}
+
 /* ---------- Estados de lista ---------- */
 
 export function estadoVazio(texto) {
@@ -153,4 +158,16 @@ export async function comBotaoOcupado(botao, tarefa) {
     botao.disabled = false;
     botao.removeAttribute("aria-busy");
   }
+}
+
+// Faixa de erro de carregamento com botão "Tentar novamente".
+// 401 não chega aqui: api.js já redirecionou ao login.
+export function faixaDeFalha(erro, aoTentarDeNovo, textoPadrao = "Não foi possível carregar os dados.") {
+  return el(
+    "div",
+    { class: "faixa faixa-perigo", role: "alert" },
+    erro?.mensagem || textoPadrao,
+    " ",
+    el("button", { type: "button", class: "btn btn-contorno btn-pequeno", onclick: aoTentarDeNovo }, "Tentar novamente"),
+  );
 }
