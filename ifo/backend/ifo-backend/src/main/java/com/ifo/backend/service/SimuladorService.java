@@ -11,10 +11,10 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-// Calculadora de investimentos (RF18–RF19, RN13): nada é salvo no banco (ADR-003).
+// Simulador de investimentos (RF18–RF19, RN13): nada é salvo no banco (ADR-003).
 // Aporte no fim de cada mês; as contas ficam em precisão alta e só o resultado vai a 2 casas.
 @Service
-public class CalculadoraService {
+public class SimuladorService {
 
     private static final BigDecimal CEM = BigDecimal.valueOf(100);
     private static final BigDecimal DOIS = BigDecimal.valueOf(2);

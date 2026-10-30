@@ -2,7 +2,7 @@ package com.ifo.backend.controller;
 
 import com.ifo.backend.dto.SimulacaoRequest;
 import com.ifo.backend.dto.SimulacaoResponse;
-import com.ifo.backend.service.CalculadoraService;
+import com.ifo.backend.service.SimuladorService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/investimentos")
 public class InvestimentoController {
 
-    private final CalculadoraService service;
+    private final SimuladorService service;
 
-    public InvestimentoController(CalculadoraService service) {
+    public InvestimentoController(SimuladorService service) {
         this.service = service;
     }
 

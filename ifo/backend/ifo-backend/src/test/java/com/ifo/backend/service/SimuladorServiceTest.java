@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CalculadoraServiceTest {
+class SimuladorServiceTest {
 
-    private final CalculadoraService service = new CalculadoraService();
+    private final SimuladorService service = new SimuladorService();
 
     // Caso de referência do contrato (06-api.md §7)
     @Test
