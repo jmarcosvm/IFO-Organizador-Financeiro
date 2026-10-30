@@ -49,19 +49,19 @@ A V1 teve as Sprints 0–4. A refatoração continua a numeração com o prefixo
 
 ### R4 — Frontend
 - [x] Definir design tokens (cores, tipografia, espaçamento, raios) em variáveis CSS. *(Parte 1: `css/tokens.css`)*
-- [ ] Layout **mobile-first** (360 px) com breakpoints para tablet e desktop; menu adaptado para celular.
-- [ ] Reescrever `app.js` em módulos ES (`api.js`, `auth.js`, `ui.js` e um arquivo por tela).
+- [x] Layout **mobile-first** (360 px) com breakpoints para tablet e desktop; menu adaptado para celular. *(Partes 1 e 5; verificado em 360, 1024 e 1280 px)*
+- [x] Reescrever `app.js` em módulos ES (`api.js`, `auth.js`, `ui.js` e um arquivo por tela). *(Partes 1 a 5; o `app.js` da V1 foi removido na Parte 4)*
 - [x] Cliente de API com token e tratamento central de erros (401 volta ao login). *(Parte 2: `js/api.js`, `auth.js`, `sessao.js`)*
 - [x] Telas: login, cadastro, dashboard, transações (filtro de mês), orçamento, metas, simulador, perfil. *(Partes 2 a 4)*
 - [x] Formulário de transação: **categoria → (grupo exibido automaticamente) → descrição**. *(Parte 3: `componentes/formTransacao.js`)*
 - [x] Alerta de orçamento (faixa amarela/vermelha) no lançamento e no dashboard. *(Parte 3)*
 - [x] Gráfico de pizza simples (SVG ou `conic-gradient`, sem biblioteca). *(Parte 3: `conic-gradient`)*
-- [ ] Tela de **despesas recorrentes** (listar, criar, editar, pausar, excluir).
+- [x] Tela de **despesas recorrentes** (listar, criar, editar, pausar, excluir). *(Parte 5)*
 - [x] Botão **Exportar CSV** na tela de transações, respeitando o filtro de mês. *(Parte 3)*
 - [x] **Dark mode:** tokens de cor em `:root` e `[data-theme="dark"]`, padrão por `prefers-color-scheme`, botão de alternar, escolha em `localStorage`; conferir contraste AA nos dois temas e as cores do gráfico de pizza.
 - [x] Trocar `innerHTML` com dados do usuário por `textContent`/escape. *(Parte 4: o `app.js` da V1 foi removido; nenhum `innerHTML` no frontend)*
-- [ ] Levantar e corrigir bugs visuais (checklist por tela abaixo).
-- [ ] Acessibilidade básica: `label`, foco visível, contraste AA, teclado.
+- [x] Levantar e corrigir bugs visuais (checklist por tela abaixo). *(Parte 5)*
+- [x] Acessibilidade básica: `label`, foco visível, contraste AA, teclado. *(Parte 5; `axe-core` sem violações WCAG 2.x A/AA)*
 
 ### R5 — Qualidade e entrega
 - [ ] Testcontainers (PostgreSQL) para integração.
@@ -70,18 +70,24 @@ A V1 teve as Sprints 0–4. A refatoração continua a numeração com o prefixo
 - [ ] README final, `dev-seed.sql`, passo a passo de execução.
 - [ ] Atualizar o PDF do seminário com os diagramas novos (inclui regenerar `docs/img/seq-simulador.png`, cuja imagem ainda mostra o nome antigo da classe, e conferir o `bpmn-5-simulador.png`).
 
-## 3. Checklist de bugs visuais (preencher na R4)
+## 3. Checklist de bugs visuais (preenchido na R4)
 
 Marcar por tela, em celular (360 px) e desktop (1280 px):
 
 | Tela | Sobreposição | Texto cortado | Menu/overflow | Estados vazios | Erros visíveis | Foco/contraste |
 |---|---|---|---|---|---|---|
-| Login / Cadastro | ☐ | ☐ | ☐ | — | ☐ | ☐ |
-| Dashboard | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
-| Transações | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
-| Orçamento | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
-| Metas | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
-| Simulador | ☐ | ☐ | ☐ | — | ☐ | ☐ |
+| Login / Cadastro | ☑ | ☑ | ☑ | — | ☑ | ☑ |
+| Dashboard | ☑ | ☑ | ☑ | ☑ | ☑ | ☑ |
+| Transações | ☑ | ☑ | ☑ | ☑ | ☑ | ☑ |
+| Orçamento | ☑ | ☑ | ☑ | ☑ | ☑ | ☑ |
+| Metas | ☑ | ☑ | ☑ | ☑ | ☑ | ☑ |
+| Simulador | ☑ | ☑ | ☑ | — | ☑ | ☑ |
+| Recorrências | ☑ | ☑ | ☑ | ☑ | ☑ | ☑ |
+| Perfil | ☑ | ☑ | ☑ | — | ☑ | ☑ |
+
+**Como foi verificado (Parte 5):** Chrome sem interface com a API simulada, em 360, 1024 e 1280 px, nos temas claro e escuro (66 combinações de página × tela × tema), medindo rolagem horizontal e a altura da barra superior, rodando o `axe-core` (WCAG 2.x A/AA, inclui contraste) e conferindo as capturas de tela. Estados vazios e de erro (com "Tentar novamente") foram conferidos por testes automatizados em jsdom.
+
+**Defeitos encontrados e corrigidos:** (1) valores monetários cortados em tabelas quando a descrição era uma palavra longa sem espaços; (2) área de rolagem da tabela sem acesso por teclado; (3) barra superior em duas linhas no celular; (4) texto sem respiro entre blocos na tela de orçamento; (5) cartão da meta em destaque quebrava com meta sem prazo (campo opcional).
 
 ## 4. Backlog IFO V2 (futuro, fora deste ciclo)
 
