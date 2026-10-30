@@ -1,0 +1,159 @@
+/* ============================================
+   IFO - Base (reset, tipografia, foco, layout)
+   Mobile-first: estilos de 360 px; tablet e desktop entram por min-width.
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font-family: var(--fonte);
+  font-size: var(--texto-md);
+  line-height: var(--altura-linha);
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  font-weight: var(--peso-forte);
+}
+
+h1 { font-size: var(--texto-xl); }
+h2 { font-size: var(--texto-lg); }
+h3 { font-size: var(--texto-md); }
+
+a {
+  color: var(--cor-primaria);
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* Foco visível para quem usa teclado (RNF08) */
+:focus-visible {
+  outline: 3px solid var(--cor-foco);
+  outline-offset: 2px;
+}
+
+/* Link "Ir para o conteúdo": só aparece ao receber foco */
+.pular-conteudo {
+  position: absolute;
+  left: var(--espaco-3);
+  top: -100px;
+  z-index: 300;
+  padding: var(--espaco-2) var(--espaco-4);
+  background: var(--cor-primaria);
+  color: var(--cor-sobre-primaria);
+  border-radius: var(--raio-sm);
+}
+
+.pular-conteudo:focus {
+  top: var(--espaco-3);
+}
+
+/* Texto só para leitor de tela */
+.so-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Layout ---------- */
+
+.conteudo {
+  width: 100%;
+  max-width: var(--largura-conteudo);
+  margin: 0 auto;
+  padding: var(--espaco-4) var(--espaco-4) var(--espaco-7);
+}
+
+.cabecalho-pagina {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-3);
+  margin-bottom: var(--espaco-4);
+}
+
+.pilha {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-4);
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espaco-3);
+}
+
+.grade {
+  display: grid;
+  gap: var(--espaco-4);
+  grid-template-columns: 1fr;
+}
+
+.texto-suave { color: var(--cor-texto-suave); }
+.texto-centro { text-align: center; }
+.receita { color: var(--cor-receita); }
+.despesa { color: var(--cor-despesa); }
+
+.rodape {
+  padding: var(--espaco-5) var(--espaco-4);
+  text-align: center;
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-xs);
+}
+
+@media (min-width: 768px) {
+  .conteudo {
+    padding: var(--espaco-5) var(--espaco-5) var(--espaco-7);
+  }
+
+  .grade-2 { grid-template-columns: repeat(2, 1fr); }
+  .grade-3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .grade-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

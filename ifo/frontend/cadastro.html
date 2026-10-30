@@ -3,131 +3,99 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IFO - Cadastro</title>
-    <link rel="stylesheet" href="css/estilo.css" />
+    <title>Criar conta · IFO</title>
+    <!-- Aplica o tema salvo antes da pintura (evita "piscar"); ver js/tema.js -->
+    <script>
+      try {
+        var t = localStorage.getItem("ifo.tema");
+        if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
   </head>
   <body>
-    <div class="login-container">
-      <div class="login-box">
-        <h1>IFO</h1>
-        <p>Crie sua conta gratuita</p>
+    <a class="pular-conteudo" href="#conteudo">Ir para o conteúdo</a>
 
-        <form id="form-cadastro">
-          <div class="form-group">
-            <label for="nome">Nome Completo</label>
-            <input
-              type="text"
-              id="nome"
-              class="form-control"
-              placeholder="Seu nome completo"
-              required
-            />
+    <div class="autenticacao">
+      <main id="conteudo" class="autenticacao-caixa">
+        <h1>IFO</h1>
+        <p class="subtitulo">Crie sua conta gratuita</p>
+
+        <form id="form-cadastro" class="formulario" novalidate>
+          <div class="campo">
+            <label for="nome">Nome completo</label>
+            <input class="entrada" type="text" id="nome" name="nome" autocomplete="name" required />
           </div>
 
-          <div class="form-group">
-            <label for="email">Email</label>
+          <div class="campo">
+            <label for="email">E-mail</label>
             <input
+              class="entrada"
               type="email"
               id="email"
-              class="form-control"
-              placeholder="seu@email.com"
+              name="email"
+              autocomplete="email"
+              placeholder="voce@email.com"
               required
             />
           </div>
 
-          <div class="form-group">
+          <div class="campo">
             <label for="senha">Senha</label>
             <input
+              class="entrada"
               type="password"
               id="senha"
-              class="form-control"
-              placeholder="Mínimo 6 caracteres"
-              minlength="6"
+              name="senha"
+              autocomplete="new-password"
+              minlength="8"
+              aria-describedby="ajuda-senha"
               required
             />
+            <span id="ajuda-senha" class="campo-ajuda">Mínimo de 8 caracteres.</span>
           </div>
 
-          <div class="form-group">
-            <label for="confirmar-senha">Confirmar Senha</label>
+          <div class="campo">
+            <label for="confirmar-senha">Confirmar senha</label>
             <input
+              class="entrada"
               type="password"
               id="confirmar-senha"
-              class="form-control"
-              placeholder="Digite a senha novamente"
+              name="confirmarSenha"
+              autocomplete="new-password"
               required
             />
           </div>
 
-          <div class="form-group">
-            <label for="renda">Renda Mensal (R$)</label>
+          <div class="campo">
+            <label for="renda">Renda mensal (R$)</label>
             <input
+              class="entrada"
               type="number"
               id="renda"
-              class="form-control"
-              placeholder="0,00"
+              name="rendaMensal"
+              inputmode="decimal"
               step="0.01"
               min="0"
+              aria-describedby="ajuda-renda"
               required
             />
+            <span id="ajuda-renda" class="campo-ajuda">
+              Usada para calcular seus limites pela regra 50/30/20.
+            </span>
           </div>
 
-          <div class="alert alert-info mb-3">
-            <strong>Dica:</strong> Sua renda será usada para calcular a regra
-            50/30/20 automaticamente.
-          </div>
-
-          <button type="submit" class="btn btn-success" style="width: 100%">
-            CADASTRAR
-          </button>
+          <button type="submit" class="btn btn-primario btn-bloco">Criar conta</button>
         </form>
 
-        <p class="mt-3 text-center">
-          Já tem conta?
-          <a href="index.html" style="color: #2563eb">Fazer Login</a>
+        <p class="texto-centro" style="margin-top: var(--espaco-5)">
+          Já tem conta? <a href="index.html">Entrar</a>
         </p>
-      </div>
+      </main>
     </div>
 
-    <script src="js/app.js"></script>
-    <script>
-      document
-        .getElementById("form-cadastro")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
-
-          const nome = document.getElementById("nome").value;
-          const email = document.getElementById("email").value;
-          const senha = document.getElementById("senha").value;
-          const confirmarSenha =
-            document.getElementById("confirmar-senha").value;
-          const renda = parseFloat(document.getElementById("renda").value);
-
-          if (senha.length < 6) {
-            alert("A senha deve ter pelo menos 6 caracteres!");
-            return;
-          }
-
-          if (senha !== confirmarSenha) {
-            alert("As senhas não coincidem!");
-            return;
-          }
-
-          if (renda <= 0) {
-            alert("Por favor, informe sua renda mensal!");
-            return;
-          }
-
-          const usuario = await cadastrarUsuario(nome, email, senha, renda);
-
-          if (usuario) {
-            alert(`Cadastro realizado com sucesso!\n\nBem-vindo, ${nome}!`);
-            window.location.href = "index.html";
-          } else {
-            alert(
-              "Erro ao cadastrar. Tente novamente.\n\nEste email já está sendo utilizado.",
-            );
-          }
-        });
-    </script>
+    <script type="module" src="js/telas/cadastro.js"></script>
   </body>
 </html>

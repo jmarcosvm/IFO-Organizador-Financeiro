@@ -48,7 +48,7 @@ A V1 teve as Sprints 0–4. A refatoração continua a numeração com o prefixo
 - [x] `GET /transacoes/exportar` (CSV `;`, BOM UTF-8, vírgula decimal, neutralização de `=+-@`) (RN18).
 
 ### R4 — Frontend
-- [ ] Definir design tokens (cores, tipografia, espaçamento, raios) em variáveis CSS.
+- [x] Definir design tokens (cores, tipografia, espaçamento, raios) em variáveis CSS. *(Parte 1: `css/tokens.css`)*
 - [ ] Layout **mobile-first** (360 px) com breakpoints para tablet e desktop; menu adaptado para celular.
 - [ ] Reescrever `app.js` em módulos ES (`api.js`, `auth.js`, `ui.js` e um arquivo por tela).
 - [ ] Cliente de API com token e tratamento central de erros (401 volta ao login).
@@ -58,7 +58,7 @@ A V1 teve as Sprints 0–4. A refatoração continua a numeração com o prefixo
 - [ ] Gráfico de pizza simples (SVG ou `conic-gradient`, sem biblioteca).
 - [ ] Tela de **despesas recorrentes** (listar, criar, editar, pausar, excluir).
 - [ ] Botão **Exportar CSV** na tela de transações, respeitando o filtro de mês.
-- [ ] **Dark mode:** tokens de cor em `:root` e `[data-theme="dark"]`, padrão por `prefers-color-scheme`, botão de alternar, escolha em `localStorage`; conferir contraste AA nos dois temas e as cores do gráfico de pizza.
+- [x] **Dark mode:** tokens de cor em `:root` e `[data-theme="dark"]`, padrão por `prefers-color-scheme`, botão de alternar, escolha em `localStorage`; conferir contraste AA nos dois temas e as cores do gráfico de pizza.
 - [ ] Trocar `innerHTML` com dados do usuário por `textContent`/escape.
 - [ ] Levantar e corrigir bugs visuais (checklist por tela abaixo).
 - [ ] Acessibilidade básica: `label`, foco visível, contraste AA, teclado.
@@ -109,5 +109,6 @@ Marcar por tela, em celular (360 px) e desktop (1280 px):
 | ADR-011 | **Despesas recorrentes** como modelo + job diário idempotente (`ultima_competencia`), só para DESPESA | Aprovado em 18/10/2026; evita duplicar, recupera meses perdidos e mantém a transação gerada como transação comum |
 | ADR-012 | **Exportar CSV** com `;`, vírgula decimal e UTF-8 com BOM | Abre direto no Excel em português; neutraliza injeção de fórmulas |
 | ADR-013 | **Dark mode** por variáveis CSS, `prefers-color-scheme` e `localStorage` | Sem biblioteca; reaproveita os design tokens da R4 |
+| ADR-014 | Frontend **multi-página** (um `.html` por tela) com **módulos ES**; sessão (JWT + usuário) em `localStorage` (`ifo.sessao`); **um único cliente de API** (`api.js`) que injeta o token e leva o 401 de rota protegida ao login; **sem `alert`/`confirm`/`prompt`** (toasts e `<dialog>`); dado dinâmico entra no DOM só por `textContent` (helper `el()`), nunca por `innerHTML` | Mantém a estrutura da V1 e o Live Server sem build (ADR-006); centraliza token e erros; fecha o XSS da V1 (RNF03); `<dialog>` dá foco e Esc de graça (RNF08) |
 
 Novas decisões entram nesta tabela com número sequencial.
