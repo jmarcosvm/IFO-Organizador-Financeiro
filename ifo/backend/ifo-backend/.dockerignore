@@ -1,0 +1,14 @@
+# Fora da imagem: build local, segredos, dados de demonstração e lixo de IDE
+target/
+dev/
+.env
+.env.*
+.git
+.idea
+.vscode
+.mvn
+mvnw
+mvnw.cmd
+HELP.md
+Dockerfile
+.dockerignore

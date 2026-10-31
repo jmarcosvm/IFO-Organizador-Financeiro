@@ -101,6 +101,18 @@ Pré-requisitos: **Java 17**, **Docker** (ligado) e um servidor estático simple
 
    No Windows, `.\mvnw.cmd test` no PowerShell. Os testes de integração e o Cucumber sobem **o próprio PostgreSQL** com Testcontainers: só precisam do Docker ligado (na primeira vez ele baixa as imagens). Não dependem do `.env` nem do container `ifo-db`.
 
+## Backend em Docker (usado na publicação)
+
+O `ifo/backend/ifo-backend/Dockerfile` gera a mesma imagem que roda na nuvem (ADR-018). Para testar localmente, com o `ifo-db` ligado:
+
+```bash
+cd ifo/backend/ifo-backend
+docker build -t ifo-backend .
+docker run --rm --env-file ../../../.env -e DB_URL=jdbc:postgresql://host.docker.internal:5432/ifo_db -e PORT=10000 -p 10000:10000 ifo-backend
+```
+
+A imagem usa o perfil `prod`, o fuso `America/Sao_Paulo` e lê a porta da variável `PORT` (sem ela, 8081). Nenhum segredo vai dentro da imagem e a pasta `dev/` (com o `dev-seed.sql`) fica de fora. A seção de publicação completa entra na R6, Parte 6.
+
 ## Dados de demonstração (opcional)
 
 O arquivo [`dev-seed.sql`](ifo/backend/ifo-backend/dev/dev-seed.sql) cria dois usuários com transações dos últimos três meses, metas e despesas recorrentes, para ver o sistema funcionando sem digitar nada. Rode **depois** de o backend ter subido ao menos uma vez (o Flyway cria as tabelas). A partir da raiz do repositório:
