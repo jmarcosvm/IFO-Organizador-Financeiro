@@ -3,8 +3,14 @@
 // do formato de 06-api.md §8 numa exceção ApiErro e leva o 401 de volta ao login.
 
 import { lerSessao, limparSessao } from "./sessao.js";
+import { toast } from "./ui.js";
 
-export const API_URL = "http://localhost:8081/api";
+// Na máquina do desenvolvedor (Live Server) a API é a local; em qualquer outro endereço
+// (Vercel) é a API publicada no Render (ADR-018). O mesmo código serve os dois ambientes.
+const ENDERECOS_LOCAIS = ["localhost", "127.0.0.1", "[::1]"];
+const EM_PRODUCAO = !ENDERECOS_LOCAIS.includes(window.location.hostname);
+
+export const API_URL = EM_PRODUCAO ? "https://ifo-api.onrender.com/api" : "http://localhost:8081/api";
 
 export class ApiErro extends Error {
   // status 0 = nem chegou ao servidor (API fora do ar, sem rede, CORS)
@@ -17,8 +23,45 @@ export class ApiErro extends Error {
   }
 }
 
-const MENSAGEM_REDE = "Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.";
+const MENSAGEM_REDE = EM_PRODUCAO
+  ? "Não foi possível conectar ao servidor. Se ele estava parado, aguarde cerca de 1 minuto e tente novamente."
+  : "Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.";
 const MENSAGEM_PADRAO = "Ocorreu um erro inesperado. Tente novamente.";
+
+// Hospedagem gratuita (ADR-018): depois de um tempo sem uso o servidor dorme e a primeira
+// resposta leva cerca de 1 minuto. Se a espera passar de alguns segundos, avisa o usuário.
+// Várias requisições ao mesmo tempo (ex.: o dashboard) compartilham um único aviso.
+const ESPERA_ANTES_DO_AVISO_MS = 6000;
+const DURACAO_MAXIMA_DO_AVISO_MS = 120000;
+const MENSAGEM_ACORDANDO = "O servidor estava em repouso e está acordando. Isso pode levar até 1 minuto, aguarde.";
+
+let pendentes = 0;
+let relogioDoAviso = null;
+let avisoNaTela = null;
+
+// Devolve a função que encerra o acompanhamento desta requisição (pode ser chamada mais de uma vez).
+function avisarSeDemorar() {
+  if (!EM_PRODUCAO) return () => {};
+
+  pendentes++;
+  if (pendentes === 1) {
+    relogioDoAviso = setTimeout(() => {
+      avisoNaTela = toast(MENSAGEM_ACORDANDO, "info", DURACAO_MAXIMA_DO_AVISO_MS);
+    }, ESPERA_ANTES_DO_AVISO_MS);
+  }
+
+  let encerrada = false;
+  return () => {
+    if (encerrada) return;
+    encerrada = true;
+    pendentes--;
+    if (pendentes === 0) {
+      clearTimeout(relogioDoAviso);
+      avisoNaTela?.remove();
+      avisoNaTela = null;
+    }
+  };
+}
 
 // Envia e trata o erro (rede, 4xx/5xx, 401); devolve a Response quando deu certo.
 // publica: true -> rota sem login (/auth/*): não envia token e o 401 NÃO derruba a sessão
@@ -29,6 +72,7 @@ async function enviar(metodo, caminho, { corpo, publica = false, aceita = "appli
   const sessao = publica ? null : lerSessao();
   if (sessao) cabecalhos.Authorization = `Bearer ${sessao.token}`;
 
+  const encerrarAviso = avisarSeDemorar();
   let resposta;
   try {
     resposta = await fetch(`${API_URL}${caminho}`, {
@@ -37,8 +81,11 @@ async function enviar(metodo, caminho, { corpo, publica = false, aceita = "appli
       body: corpo === undefined ? undefined : JSON.stringify(corpo),
     });
   } catch {
+    encerrarAviso();
     throw new ApiErro(0, MENSAGEM_REDE);
   }
+
+  encerrarAviso();
 
   if (resposta.ok) return resposta;
 
