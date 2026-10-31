@@ -53,7 +53,7 @@ flowchart LR
 
 ```mermaid
 classDiagram
-    direction LR
+    direction TB
 
     class Usuario {
         -Long idUsuario
@@ -91,15 +91,13 @@ classDiagram
         -BigDecimal valorObjetivo
         -BigDecimal valorAtual
         -LocalDate prazo
-        +calcularProgresso() BigDecimal
-        +estaConcluida() boolean
     }
 
     class TransacaoRecorrente {
         -Long idRecorrencia
         -BigDecimal valor
         -String descricao
-        -Integer diaMes
+        -Short diaMes
         -LocalDate dataInicio
         -LocalDate dataFim
         -Boolean ativa
@@ -125,18 +123,37 @@ classDiagram
         COMPOSTO
     }
 
+    class AuthService {
+        +cadastrar(dto)
+        +login(dto)
+    }
+
     class TransacaoService {
         +criar(usuarioId, dto)
-        +listarPorMes(usuarioId, mes, ano)
+        +listar(usuarioId, mes)
         +atualizar(usuarioId, id, dto)
         +excluir(usuarioId, id)
-        +resumoMensal(usuarioId, mes, ano)
+        +exportar(usuarioId, mes)
+    }
+
+    class ResumoService {
+        +resumir(usuarioId, mes)
     }
 
     class OrcamentoService {
-        +obter(usuarioId)
+        +listar(usuarioId)
         +atualizar(usuarioId, percentuais)
-        +status(usuarioId, mes, ano)
+        +status(usuarioId, mes)
+        +alertar(usuarioId, grupo, mes)
+        +criarPadrao(usuario)
+    }
+
+    class MetaFinanceiraService {
+        +listar(usuarioId)
+        +criar(usuarioId, dto)
+        +atualizar(usuarioId, id, dto)
+        +aportar(usuarioId, id, dto)
+        +excluir(usuarioId, id)
     }
 
     class SimuladorService {
@@ -144,12 +161,22 @@ classDiagram
     }
 
     class RecorrenciaService {
+        +listar(usuarioId)
         +criar(usuarioId, dto)
-        +gerarPendentes()
+        +atualizar(usuarioId, id, dto)
+        +definirAtiva(usuarioId, id, ativa)
+        +excluir(usuarioId, id)
+        +gerarPorId(id, hoje)
+        +idsAtivas()
     }
 
-    class ExportacaoService {
-        +exportarCsv(usuarioId, mes, ano)
+    class RecorrenciaJob {
+        +gerarOcorrenciasDoDia()
+    }
+
+    class ExportadorCsv {
+        <<utilitário>>
+        +gerar(transacoes)
     }
 
     Usuario "1" --> "0..*" Transacao : registra
@@ -157,7 +184,11 @@ classDiagram
     Categoria "1" --> "0..*" TransacaoRecorrente : classifica
     TransacaoRecorrente "1" --> "0..*" Transacao : gera
     RecorrenciaService ..> TransacaoRecorrente
-    ExportacaoService ..> Transacao
+    RecorrenciaJob ..> RecorrenciaService : todo dia às 00h05
+    TransacaoService ..> ExportadorCsv
+    ResumoService ..> Transacao
+    MetaFinanceiraService ..> MetaFinanceira
+    AuthService ..> OrcamentoService : cria o padrão 50/30/20
     Usuario "1" --> "3" Orcamento : configura
     Usuario "1" --> "0..*" MetaFinanceira : define
     Categoria "1" --> "0..*" Transacao : classifica
@@ -168,7 +199,7 @@ classDiagram
     SimuladorService ..> TipoJuros
 ```
 
-> `ResumoMensal`, `ResultadoSimulacao`, `StatusOrcamento` e `TransacaoResposta` são **DTOs** (não são tabelas). Não existe classe de conta/carteira nem de investimento persistido.
+> Os DTOs (`ResumoResponse`, `StatusGrupoResponse`, `TransacaoComAlertaResponse` etc.) não são tabelas. Não existe classe de conta/carteira nem de investimento persistido. O progresso da meta (limitado a 100%) é calculado no `MetaResponse`, não na entidade.
 
 ## 3. Diagramas de sequência
 
@@ -180,18 +211,18 @@ sequenceDiagram
     actor J as João
     participant FE as Frontend
     participant API as AuthController
-    participant SVC as UsuarioService
+    participant SVC as AuthService
     participant DB as PostgreSQL
 
     J->>FE: Informa e-mail e senha
     FE->>API: POST /api/auth/login
-    API->>SVC: autenticar(email, senha)
+    API->>SVC: login(email, senha)
     SVC->>DB: SELECT usuario WHERE email
-    DB-->>SVC: usuário (senha_hash)
-    SVC->>SVC: BCrypt.matches(senha, hash)
+    DB-->>SVC: usuário (senha_hash) ou nada
+    SVC->>SVC: BCrypt.matches(senha, hash) roda sempre, mesmo sem usuário
     alt Credenciais válidas
-        SVC-->>API: usuário autenticado
-        API-->>FE: 200 { token JWT, nome, rendaMensal }
+        SVC-->>API: token JWT + dados do usuário
+        API-->>FE: 200 { token, usuario { idUsuario, nome, email, rendaMensal } }
         FE->>FE: Guarda o token
         FE-->>J: Abre o dashboard
     else Credenciais inválidas
@@ -214,13 +245,12 @@ sequenceDiagram
 
     J->>FE: Escolhe categoria "Delivery", valor, data e descrição "pizza"
     FE->>TC: POST /api/transacoes (Authorization: Bearer token)
-    TC->>TC: Extrai usuarioId do token
+    TC->>TC: Filtro JWT entrega o usuarioId e @Valid confere o corpo
     TC->>TS: criar(usuarioId, dto)
     TS->>DB: Busca categoria (tipo e grupo)
     DB-->>TS: Delivery · DESPESA · LAZER
-    TS->>TS: Valida valor maior que zero
     TS->>DB: INSERT transacao
-    TS->>OS: status(usuarioId, mês, ano)
+    TS->>OS: alertar(usuarioId, LAZER, mês)
     OS->>DB: Soma despesas do mês por grupo
     OS->>DB: Busca renda e percentuais
     OS-->>TS: Lazer: 104% usado (ESTOURO)
@@ -309,7 +339,7 @@ flowchart TD
     g2 -- "Sim" --> d2[("Somar despesas<br/>do grupo no mês")]:::db
     d2 --> b2["Calcular % usado<br/>do limite do grupo"]:::be
     b2 --> g3{"Nível do grupo"}:::gw
-    g3 -- "OK (menos de 80%)" --> f2
+    g3 -- "OK (menos de 80%)<br/>ou SEM_LIMITE" --> f2
     g3 -- "ATENÇÃO ou ESTOURO" --> r2["Exibir alerta<br/>de orçamento"]:::alert
     r2 --> f2
     f2 --> e1(("Transação<br/>registrada")):::fim
@@ -414,7 +444,7 @@ flowchart TD
     classDef fim fill:#FECACA,stroke:#DC2626,color:#111;
 ```
 
-> A geração é **idempotente**: a última competência impede duplicar transações mesmo que o job rode duas vezes ou fique dias parado (RN15).
+> A geração é **idempotente**: a última competência impede duplicar transações mesmo que o job rode duas vezes ou fique dias parado (RN15). O mesmo gerador roda também na hora em que a recorrência é criada ou editada. Pausada não gera, e reativar **não** gera os meses em que ficou pausada (RN17).
 
 ## 5. Arquitetura em camadas
 
