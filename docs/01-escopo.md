@@ -3,6 +3,7 @@
 **Projeto:** IFO — Organizador Financeiro Inteligente (V1 revisada: correção e refatoração da V1)
 **Equipe de desenvolvimento:** João Marcos Vilaça Marques
 **Equipe de apresentação:** João Marcos Vilaça Marques, Amanda Freitas de Lima, Lucas de Souza Saldanha dos Santos, Vinicius de Amorim Farias
+**Uso de IA:** desenvolvido por João Marcos com o apoio do Claude Code (Anthropic) para código, testes e documentação; decisões, revisão e controle do Git são do desenvolvedor.
 **Instituição:** FATEC Cotia — Desenvolvimento de Software Multiplataforma (Engenharia de Software II)
 
 ---

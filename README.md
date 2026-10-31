@@ -279,6 +279,10 @@ Todas começam com `/api` e, exceto `/auth/cadastro` e `/auth/login`, exigem `Au
 - Lucas de Souza Saldanha dos Santos
 - Vinicius de Amorim Farias
 
+**Uso de IA**
+
+O projeto foi desenvolvido por João Marcos com o apoio do **Claude Code** (Anthropic) para escrever código, testes e documentação. As decisões de escopo e de arquitetura, a revisão das entregas e todo o controle do Git (commits, pull requests e merges) foram feitos pelo desenvolvedor. As contribuições do Claude Code aparecem no histórico do Git como coautoria (`Co-Authored-By`).
+
 ## Próximos passos (IFO V2)
 
 A V2 **não** terá integração bancária, aplicativo mobile nem sugestões com IA. As principais diferenças em relação a esta versão são duas, mais a troca de tecnologias:
