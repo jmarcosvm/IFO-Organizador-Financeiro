@@ -88,6 +88,13 @@
   --toque-minimo: 44px;
   --largura-conteudo: 1120px;
   --altura-navbar: 56px;
+
+  /* Movimento (ADR-019): durações e curvas únicas para o sistema todo.
+     Tudo que usa estes valores é desligado por prefers-reduced-motion. */
+  --mov-rapido: 150ms;
+  --mov-medio: 250ms;
+  --mov-lento: 400ms;
+  --mov-curva: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 /* Tema escuro escolhido pelo usuário */

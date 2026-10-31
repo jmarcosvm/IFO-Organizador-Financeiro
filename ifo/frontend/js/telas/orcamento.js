@@ -1,10 +1,11 @@
 import { ApiErro, get, put } from "../api.js";
 import { criarCartaoGrupo } from "../componentes/cartaoGrupo.js";
+import { esqueletoCartoes } from "../componentes/esqueletos.js";
 import { descreverSoma, somaEmCentesimos, TOTAL_CENTESIMOS } from "../componentes/percentuais.js";
 import { criarSeletorMes, lerPeriodo } from "../componentes/seletorMes.js";
 import { moeda } from "../formato.js";
 import { iniciarTela } from "../pagina.js";
-import { comBotaoOcupado, el, estadoVazio, faixaDeFalha, limparErrosForm, mostrarErroForm, numeroOuNulo, toast } from "../ui.js";
+import { comBotaoOcupado, el, faixaDeFalha, limparErrosForm, mostrarErroForm, numeroOuNulo, toast } from "../ui.js";
 
 // `campo` = name do input = chave que o backend usa nos erros de validação (nome do campo no DTO)
 const GRUPOS = [
@@ -57,7 +58,7 @@ function iniciar() {
 
   async function carregarStatus() {
     const minha = ++versao;
-    status.replaceChildren(estadoVazio("Carregando…"));
+    status.replaceChildren(esqueletoCartoes());
     try {
       const lista = await get("/orcamento/status", periodo);
       if (minha !== versao) return;

@@ -1,4 +1,5 @@
 import { ApiErro, del, get, patch } from "../api.js";
+import { esqueletoLista } from "../componentes/esqueletos.js";
 import { abrirFormRecorrencia } from "../componentes/formRecorrencia.js";
 import { dataBR, mesAno, moeda, nomeGrupo } from "../formato.js";
 import { iniciarTela } from "../pagina.js";
@@ -50,6 +51,8 @@ function iniciar() {
   const lista = document.getElementById("lista-recorrencias");
 
   async function carregar() {
+    // esqueleto só na primeira carga: nas recargas (depois de editar ou pausar) a lista não pisca
+    if (!lista.hasChildNodes()) lista.replaceChildren(esqueletoLista(3));
     try {
       const recorrencias = await get("/recorrencias");
       lista.replaceChildren(

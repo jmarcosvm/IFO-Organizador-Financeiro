@@ -1,10 +1,11 @@
 import { ApiErro, baixarArquivo, del, get } from "../api.js";
 import { mostrarAlerta } from "../componentes/alertaOrcamento.js";
+import { esqueletoLista } from "../componentes/esqueletos.js";
 import { abrirFormTransacao } from "../componentes/formTransacao.js";
 import { criarSeletorMes, lerPeriodo, nomeMes } from "../componentes/seletorMes.js";
 import { criarTabelaTransacoes } from "../componentes/tabelaTransacoes.js";
 import { iniciarTela } from "../pagina.js";
-import { comBotaoOcupado, confirmar, estadoVazio, faixaDeFalha, toast } from "../ui.js";
+import { comBotaoOcupado, confirmar, faixaDeFalha, toast } from "../ui.js";
 
 const usuario = iniciarTela("transacoes");
 if (usuario) iniciar();
@@ -18,7 +19,7 @@ function iniciar() {
 
   async function carregar() {
     const minha = ++versao;
-    lista.replaceChildren(estadoVazio("Carregando…"));
+    lista.replaceChildren(esqueletoLista());
 
     try {
       const transacoes = await get("/transacoes", periodo);

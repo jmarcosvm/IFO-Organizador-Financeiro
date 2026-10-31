@@ -20,7 +20,7 @@
   font-size: var(--texto-sm);
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.15s, border-color 0.15s;
+  transition: background-color var(--mov-rapido), border-color var(--mov-rapido), transform var(--mov-rapido);
 }
 
 .btn:hover { border-color: var(--cor-borda); }
@@ -177,7 +177,7 @@
 .progresso-barra {
   height: 100%;
   background: var(--cor-primaria);
-  transition: width 0.4s;
+  transition: width var(--mov-lento);
 }
 
 .progresso-barra[data-nivel="OK"] { background: var(--cor-nivel-ok); }
@@ -266,11 +266,29 @@
   color: var(--cor-texto-suave);
 }
 
+/* Esqueletos: blocos cinza no lugar do conteúdo enquanto a API responde (ADR-019).
+   O brilho que corre pelos blocos fica na seção "Movimento", no fim deste arquivo. */
+.esqueleto-bloco {
+  height: 1rem;
+  border-radius: var(--raio-sm);
+  background: var(--cor-superficie-2);
+}
+
+.esqueleto-titulo { width: 40%; height: 1.25rem; }
+.esqueleto-valor { width: 55%; height: 2rem; }
+.esqueleto-texto { width: 80%; }
+.esqueleto-linha { height: 2.75rem; border-radius: var(--raio-md); }
+.esqueleto-pilha { display: flex; flex-direction: column; gap: var(--espaco-3); }
+
 /* ---------- Modal (<dialog>) ---------- */
 
 dialog.modal {
   width: min(32rem, calc(100% - 2rem));
+  /* O reset "* { margin: 0 }" (base.css) tira a margem automática com que o navegador centraliza
+     o <dialog> aberto por showModal(): sem esta linha o quadro fica preso no canto superior esquerdo. */
+  margin: auto;
   max-height: calc(100% - 2rem);
+  overflow-y: auto; /* conteúdo alto rola por dentro, sem sair da tela */
   padding: var(--espaco-5);
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio-lg);
@@ -507,3 +525,74 @@ dialog.modal h2 { margin-bottom: var(--espaco-3); }
 /* ---------- Evolução mês a mês (simulador) ---------- */
 
 details.evolucao > summary { cursor: pointer; font-weight: var(--peso-medio); padding: var(--espaco-2) 0; }
+
+/* ---------- Movimento (ADR-019) ---------- */
+/* Tudo aqui só vale para quem NÃO pediu movimento reduzido (e o base.css ainda zera as durações
+   de quem pediu). Durações e curva vêm dos tokens. Sem biblioteca e sem JS. */
+
+@keyframes brilho {
+  from { background-position: 100% 50%; }
+  to { background-position: 0 50%; }
+}
+
+@keyframes modal-entra {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+}
+
+@keyframes fundo-entra {
+  from { opacity: 0; }
+}
+
+@keyframes toast-entra {
+  from { opacity: 0; transform: translateY(12px); }
+}
+
+@keyframes menu-abre {
+  from { opacity: 0; transform: translateY(-6px); }
+}
+
+@keyframes progresso-cresce {
+  from { width: 0; }
+}
+
+@keyframes pizza-abre {
+  from { opacity: 0; transform: rotate(-70deg) scale(0.9); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Entrada em cascata: cartões, faixas e títulos sobem e aparecem; os irmãos de uma grade entram em sequência */
+  .cartao,
+  .faixa,
+  .cabecalho-pagina,
+  .autenticacao-caixa { animation: entra var(--mov-lento) var(--mov-curva) both; }
+
+  .grade > :nth-child(2) { animation-delay: 50ms; }
+  .grade > :nth-child(3) { animation-delay: 100ms; }
+  .grade > :nth-child(4) { animation-delay: 150ms; }
+  .grade > :nth-child(5) { animation-delay: 200ms; }
+  .grade > :nth-child(n + 6) { animation-delay: 250ms; }
+
+  .faixa.toast { animation: toast-entra var(--mov-medio) var(--mov-curva) both; }
+
+  /* Esqueleto: brilho que corre da direita para a esquerda */
+  .esqueleto-bloco {
+    background: linear-gradient(90deg, var(--cor-superficie-2) 25%, var(--cor-borda) 37%, var(--cor-superficie-2) 63%);
+    background-size: 400% 100%;
+    animation: brilho 1.4s ease infinite;
+  }
+
+  /* Quadros suspensos */
+  dialog.modal[open] { animation: modal-entra var(--mov-medio) var(--mov-curva); }
+  dialog.modal[open]::backdrop { animation: fundo-entra var(--mov-medio) ease-out; }
+
+  /* Menu do celular */
+  .navbar-menu.aberto { animation: menu-abre var(--mov-medio) var(--mov-curva); }
+
+  /* Barras de orçamento e de metas crescem até o valor; a rosca "abre" */
+  .progresso-barra { animation: progresso-cresce var(--mov-lento) var(--mov-curva) both; }
+  .pizza { animation: pizza-abre var(--mov-lento) var(--mov-curva) both; }
+
+  /* Botões afundam ao clicar; campos mudam a borda com suavidade */
+  .btn:active:not([disabled]) { transform: scale(0.97); }
+  .entrada { transition: border-color var(--mov-rapido); }
+}
