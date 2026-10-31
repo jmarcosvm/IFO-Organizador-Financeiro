@@ -1,5 +1,6 @@
 import { ApiErro, del, get } from "../api.js";
 import { criarCartaoMeta, ordenarMetas } from "../componentes/cartaoMeta.js";
+import { esqueletoCartoes } from "../componentes/esqueletos.js";
 import { abrirFormAporte, abrirFormMeta } from "../componentes/formMeta.js";
 import { iniciarTela } from "../pagina.js";
 import { confirmar, el, estadoVazio, faixaDeFalha, toast } from "../ui.js";
@@ -11,6 +12,8 @@ function iniciar() {
   const lista = document.getElementById("lista-metas");
 
   async function carregar() {
+    // esqueleto só na primeira carga: nas recargas (depois de aporte ou edição) a lista não pisca
+    if (!lista.hasChildNodes()) lista.replaceChildren(esqueletoCartoes(2, "grade grade-2"));
     try {
       const metas = await get("/metas");
       lista.replaceChildren(

@@ -2,6 +2,7 @@ import { ApiErro, get } from "../api.js";
 import { criarAlertaDeStatus, mostrarAlerta, NIVEIS_DE_ALERTA } from "../componentes/alertaOrcamento.js";
 import { abrirFormTransacao } from "../componentes/formTransacao.js";
 import { criarCartaoGrupo } from "../componentes/cartaoGrupo.js";
+import { esqueletoPainel } from "../componentes/esqueletos.js";
 import { ordenarMetas, textoPrazo } from "../componentes/cartaoMeta.js";
 import { criarPizza } from "../componentes/pizza.js";
 import { criarProgresso } from "../componentes/progresso.js";
@@ -107,7 +108,7 @@ function iniciar() {
 
   async function carregar() {
     const minha = ++versao;
-    conteudo.replaceChildren(estadoVazio("Carregando…"));
+    conteudo.replaceChildren(esqueletoPainel());
 
     try {
       const [resumo, status, transacoes, metas] = await Promise.all([

@@ -148,6 +148,39 @@ textarea {
   .grade-4 { grid-template-columns: repeat(4, 1fr); }
 }
 
+/* ---------- Movimento (ADR-019) ---------- */
+
+/* Cabeçalho ainda vazio (a navbar é montada por JS): reserva a altura para a página não "pular" */
+.navbar:empty { min-height: calc(var(--altura-navbar) + 1px); }
+
+@keyframes entra {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+@keyframes vt-sai {
+  to { opacity: 0; }
+}
+
+@keyframes vt-entra {
+  from { opacity: 0; transform: translateY(6px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Transição entre páginas (cada tela é um .html): a antiga some e a nova entra suave.
+     Navegador sem suporte ignora a regra e navega como antes. */
+  @view-transition { navigation: auto; }
+
+  ::view-transition-old(root) { animation: vt-sai var(--mov-rapido) ease-out both; }
+  ::view-transition-new(root) { animation: vt-entra var(--mov-medio) var(--mov-curva) both; }
+
+  /* Troca de tema sem "estalo" */
+  body,
+  .cartao,
+  .navbar {
+    transition: background-color var(--mov-medio), border-color var(--mov-medio), color var(--mov-medio);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
