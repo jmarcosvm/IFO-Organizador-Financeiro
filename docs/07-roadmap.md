@@ -68,7 +68,7 @@ A V1 teve as Sprints 0–4. A refatoração continua a numeração com o prefixo
 - [x] Reescrever Cucumber chamando o código real (login, transação com alerta, meta, simulador). *(Parte 1: via HTTP com MockMvc e JWT; 33 cenários em 6 features)*
 - [x] Revisão de segurança: ninguém acessa dado alheio; segredos fora do repo. *(Parte 2: ADR-016; `isolamento.feature` e `acesso.feature`; 132 testes)*
 - [x] README final, `dev-seed.sql`, passo a passo de execução. *(Parte 3: `README.md` e `ifo/backend/ifo-backend/dev/dev-seed.sql`; decisão sobre testes de frontend no ADR-017)*
-- [ ] Atualizar o PDF do seminário com os diagramas novos (inclui regenerar `docs/img/seq-simulador.png`, cuja imagem ainda mostra o nome antigo da classe, e conferir o `bpmn-5-simulador.png`).
+- [x] Atualizar o PDF do seminário com os diagramas novos. *(Parte 4: diagramas de classes, login, despesa com alerta, processo 2 e recorrências corrigidos contra o código; 6 PNGs regerados com Mermaid CLI, inclusive `seq-simulador.png`; `IFO-Documentacao.pdf` gerado de novo com Chrome, no design do PDF original: capa, sumário e capítulos 01 a 06 (escopo, requisitos, metodologia, modelo de dados, diagramas e uma versão enxuta de roadmap, backlog e decisões), 24 páginas; API, diagnóstico, dicionário de dados e migrations ficam só nos `.md`)*
 
 ## 3. Checklist de bugs visuais (preenchido na R4)
 

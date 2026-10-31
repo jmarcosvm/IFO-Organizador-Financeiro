@@ -4,7 +4,7 @@ Aplicação web para **controle financeiro pessoal**: registre receitas e despes
 
 Projeto acadêmico da **FATEC Cotia** — Desenvolvimento de Software Multiplataforma (Engenharia de Software II).
 
-> **Status:** IFO V1 revisada. Backend (R1–R3), frontend (R4), testes de integração, revisão de segurança e este guia de execução (R5, partes 1 a 3) concluídos. Falta apenas atualizar o PDF do seminário (R5, parte 4). A documentação em [`docs/`](docs/) descreve o sistema; o [roadmap](docs/07-roadmap.md) mostra o andamento e as decisões (ADRs).
+> **Status:** IFO V1 revisada. Backend (R1–R3), frontend (R4), testes de integração, revisão de segurança, guia de execução e PDF do seminário atualizado (R5, partes 1 a 4) concluídos. **Todas as sprints estão concluídas.** A documentação em [`docs/`](docs/) descreve o sistema; o [roadmap](docs/07-roadmap.md) mostra o andamento e as decisões (ADRs).
 
 ## Funcionalidades
 
