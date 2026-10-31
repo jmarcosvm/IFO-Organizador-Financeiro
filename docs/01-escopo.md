@@ -57,6 +57,8 @@ O IFO é uma aplicação web que ajuda pessoas a controlar as finanças pessoais
 
 Em **18/10/2026** a equipe aprovou a inclusão de **despesas recorrentes**, **exportar CSV** e **dark mode** (prioridade *Should*: entram depois dos itens *Must*). Os detalhes estão em `02-requisitos.md` (RF20–RF22, RN14–RN19) e no roadmap (`07-roadmap.md`).
 
+Em **31/10/2026**, concluídas as sprints R0–R5, entrou a **R6: publicar o IFO V1 na web** (link próprio e banco na nuvem, a custo zero), sem nenhuma funcionalidade nova. A escolha de hospedagem está no ADR-018 do `07-roadmap.md`.
+
 > Regra: qualquer item novo só entra na sprint com decisão registrada em `docs/` (ver ADRs no fim do `07-roadmap.md`).
 
 ## 6. Premissas e restrições
