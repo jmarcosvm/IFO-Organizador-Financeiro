@@ -1,7 +1,8 @@
 # 01 · Escopo do Projeto
 
 **Projeto:** IFO — Organizador Financeiro Inteligente (V1 revisada: correção e refatoração da V1)
-**Equipe:** João Marcos Vilaça Marques, Amanda Freitas de Lima, Lucas de Souza Saldanha dos Santos, Vinicius de Amorim Farias
+**Equipe de desenvolvimento:** João Marcos Vilaça Marques
+**Equipe de apresentação:** João Marcos Vilaça Marques, Amanda Freitas de Lima, Lucas de Souza Saldanha dos Santos, Vinicius de Amorim Farias
 **Instituição:** FATEC Cotia — Desenvolvimento de Software Multiplataforma (Engenharia de Software II)
 
 ---
@@ -51,13 +52,16 @@ O IFO é uma aplicação web que ajuda pessoas a controlar as finanças pessoais
 - **Persistência de simulações de investimento** — o simulador é apenas cálculo.
 - **Categorias criadas pelo usuário** — a lista de categorias é fixa; o usuário altera apenas a **descrição** da transação.
 - **Dashboards interativos** (gráficos dinâmicos, cartões avançados, drill-down) — ficam para o **IFO V2 (futuro)**.
-- Integração bancária, app mobile nativo, 2FA e IA para sugestões — backlog futuro.
+- **Autenticação em dois fatores (2FA)** — também fica para o **IFO V2 (futuro)**.
+- Integração bancária, app mobile e sugestões com IA — **descartados**: nem a V2 terá.
 
 ## 5. Decisões recentes de escopo
 
 Em **18/10/2026** a equipe aprovou a inclusão de **despesas recorrentes**, **exportar CSV** e **dark mode** (prioridade *Should*: entram depois dos itens *Must*). Os detalhes estão em `02-requisitos.md` (RF20–RF22, RN14–RN19) e no roadmap (`07-roadmap.md`).
 
 Em **31/10/2026**, concluídas as sprints R0–R5, entrou a **R6: publicar o IFO V1 na web** (link próprio e banco na nuvem, a custo zero), sem nenhuma funcionalidade nova. A escolha de hospedagem está no ADR-018 do `07-roadmap.md`.
+
+Também em **31/10/2026** ficaram definidos dois pontos: o **desenvolvimento é individual** (João Marcos), enquanto a **apresentação é feita pelos 4 integrantes**; e o **IFO V2** não terá integração bancária, app mobile nem sugestões com IA. As diferenças principais da V2 são o **2FA por e-mail**, o **dashboard interativo** (Chart.js) e a troca de stack (ver `07-roadmap.md`, seção 4).
 
 > Regra: qualquer item novo só entra na sprint com decisão registrada em `docs/` (ver ADRs no fim do `07-roadmap.md`).
 
@@ -66,7 +70,7 @@ Em **31/10/2026**, concluídas as sprints R0–R5, entrou a **R6: publicar o IFO
 - Usuário único por conta (sem compartilhamento entre pessoas).
 - Moeda: Real (BRL). Datas no formato brasileiro na interface.
 - Stack mantida: Java 17 + Spring Boot 3.2, PostgreSQL 15, HTML/CSS/JavaScript puro, Docker para o banco.
-- Equipe de 4 pessoas, sprints semanais, prazo acadêmico.
+- Desenvolvimento individual (João Marcos), sprints semanais, prazo acadêmico; a apresentação é feita pelos 4 integrantes da equipe.
 - O frontend **não** usa frameworks pesados (decisão da V1 mantida para leveza e controle).
 
 ## 7. Partes interessadas
@@ -74,7 +78,8 @@ Em **31/10/2026**, concluídas as sprints R0–R5, entrou a **R6: publicar o IFO
 | Papel | Quem | Interesse |
 |---|---|---|
 | Usuário final | Pessoas que querem organizar o dinheiro | Simplicidade e clareza |
-| Equipe de desenvolvimento | 4 alunos | Aprendizado e entrega |
+| Equipe de desenvolvimento | 1 aluno (João Marcos) | Aprendizado e entrega |
+| Equipe de apresentação | 4 alunos | Apresentar e defender o projeto no seminário |
 | Professor(a) de Engenharia de Software II | FATEC Cotia | Aplicação de métodos e documentação |
 
 ## 8. Critérios de sucesso

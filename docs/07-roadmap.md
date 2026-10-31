@@ -103,11 +103,21 @@ Marcar por tela, em celular (360 px) e desktop (1280 px):
 
 ## 4. Backlog IFO V2 (futuro, fora deste ciclo)
 
-- Dashboards interativos (gráficos dinâmicos, cartões, comparativos mês a mês).
-- Integração com APIs bancárias (importação de transações).
-- Aplicativo mobile nativo/híbrido.
-- Autenticação de dois fatores.
-- Sugestões de economia com IA.
+A V2 **não** terá integração bancária, aplicativo mobile nem sugestões com IA (decisão de 31/10/2026). As principais diferenças em relação à V1 revisada são duas, mais a troca de tecnologias:
+
+- **Autenticação em dois fatores (2FA):** depois da senha, código de 6 dígitos por e-mail (válido por 10 minutos, de uso único).
+- **Dashboard interativo:** gráficos com Chart.js (pizza dos gastos, linha da evolução do saldo e barras de receitas × despesas por mês).
+
+| Camada | V1 revisada | V2 |
+|---|---|---|
+| Backend | Java 17 + Spring Boot | Node.js + Express, em MVC |
+| Banco relacional | PostgreSQL | MySQL (usuários e códigos 2FA) |
+| Banco NoSQL | não havia | MongoDB (transações, categorias, orçamentos, metas, histórico e análises) |
+| Frontend | HTML, CSS e JS puro | React (Vite) + Tailwind CSS |
+| Gráficos | pizza simples (CSS) | Chart.js |
+| Autenticação | BCrypt + JWT | JWT em cookie httpOnly + 2FA por e-mail (Resend) |
+| Design | sem protótipo | Figma antes de codar cada tela |
+| Acesso a dados | JPA/Hibernate | Sequelize (MySQL) e Mongoose (MongoDB) |
 
 
 ## 5. Decisões de arquitetura (ADRs)
