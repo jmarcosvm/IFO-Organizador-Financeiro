@@ -50,6 +50,7 @@ export function toast(mensagem, tipo = "sucesso", duracaoMs = 5000) {
   const aviso = el("div", { class: `faixa faixa-${tipo} toast` }, mensagem);
   areaDeToasts().append(aviso);
   setTimeout(() => aviso.remove(), duracaoMs);
+  return aviso; // quem precisar tirar o aviso antes do tempo (ex.: api.js) chama aviso.remove()
 }
 
 /* ---------- Confirmação (no lugar do confirm() do navegador) ---------- */

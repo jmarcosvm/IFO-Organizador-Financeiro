@@ -92,6 +92,8 @@ Pré-requisitos: **Java 17**, **Docker** (ligado) e um servidor estático simple
 
    Abra `http://localhost:5500` (a API só aceita as origens `http://localhost:5500` e `http://127.0.0.1:5500`; para mudar, ajuste `CORS_ORIGINS` no `.env`). Crie uma conta na tela de cadastro e informe sua renda: sem renda não há limites de orçamento nem alertas. Se preferir ver o sistema já com dados, use a seção abaixo.
 
+   O frontend escolhe a API pelo endereço da página: em `localhost`, `127.0.0.1` ou `[::1]` usa a API local (`http://localhost:8081/api`); em qualquer outro endereço (Vercel) usa a API publicada no Render (ADR-018). A constante fica em `ifo/frontend/js/api.js`.
+
 5. **Testes**
 
    ```bash
