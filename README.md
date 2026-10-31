@@ -33,6 +33,7 @@ Para ver o sistema sem criar conta, entre com o usuário de demonstração:
 - **Despesas recorrentes** (ex.: internet, luz) geradas automaticamente todo mês
 - **Exportar CSV** das transações do mês
 - **Dark mode** (tema claro/escuro)
+- Interface fluida: transição suave entre telas, esqueletos de carregamento e pequenas animações (desligadas para quem usa "reduzir movimento" no sistema)
 
 ## Tecnologias
 
