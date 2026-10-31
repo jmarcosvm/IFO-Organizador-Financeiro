@@ -11,13 +11,13 @@ Continuamos com **desenvolvimento ágil em sprints semanais** (Scrum leve), como
 | Acompanhamento | Quadro Kanban: `Backlog → A fazer → Em andamento → Em revisão → Pronto` |
 | Revisão/retrospectiva | No fim: demonstrar o incremento, listar o que funcionou e o que ajustar |
 | Priorização | MoSCoW (ver `02-requisitos.md`) |
-| Papéis | Todos desenvolvem; um membro rotativo facilita a sprint (planejamento e revisão) |
+| Papéis | Desenvolvimento individual (João Marcos): ele planeja, codifica, testa e revisa a própria sprint. A equipe de 4 participa da apresentação |
 
 ## 2. Fluxo de trabalho com Git
 
-- Branch principal protegida: `main` (sempre funcional).
+- Branch principal: `master` (sempre funcional).
 - Branches curtas por tarefa: `feature/<resumo>`, `fix/<resumo>`, `docs/<resumo>`.
-- **Pull Request obrigatório** para entrar na `main`, com pelo menos **1 revisão** de outro membro.
+- **Pull Request obrigatório** para entrar na `master`, com **autorrevisão** do diff pelo desenvolvedor e a suíte de testes verde (não há revisão de outro membro).
 - **Commits convencionais** (em português, imperativo):
   - `feat: adiciona filtro de transações por mês`
   - `fix: corrige cálculo do saldo`
@@ -35,7 +35,7 @@ Uma tarefa só entra na sprint se tiver: objetivo claro, requisitos/regras relac
 - [ ] Testes novos/ajustados passam (`./mvnw test`).
 - [ ] Regras de negócio da tarefa cobertas por teste.
 - [ ] Sem segredos, senhas ou dados reais no código.
-- [ ] Revisado por outro membro (PR aprovado).
+- [ ] Autorrevisão do PR (diff conferido pelo desenvolvedor, `git status` sem arquivos inesperados).
 - [ ] **Documentação atualizada** (requisitos, API e diagramas Mermaid, se afetados).
 - [ ] Interface verificada em celular (≈360 px) e desktop, quando houver tela.
 
