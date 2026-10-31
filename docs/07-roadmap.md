@@ -75,7 +75,7 @@ A V1 teve as Sprints 0–4. A refatoração continua a numeração com o prefixo
 - [x] Registrar a decisão de hospedagem (ADR-018) e o backlog da R6. *(Parte 1: este documento)*
 - [x] Backend pronto para produção: `Dockerfile` e `.dockerignore`, `server.port=${PORT:8081}`, `application-prod.properties` (pool para o Neon, cabeçalhos do proxy), fuso `America/Sao_Paulo` e geração das recorrências também ao subir a aplicação. *(Parte 2: RecorrenciaJob.gerarAoSubir, RecorrenciaJobTest; 137 testes)*
 - [ ] Banco no Neon e backend no Render funcionando, com o Flyway criando o esquema e sem `dev-seed.sql`. *(Parte 3: passo a passo fora do código)*
-- [ ] Frontend com a URL da API escolhida pelo endereço (local ou produção), aviso de "servidor acordando" e site na Vercel. *(Parte 4)*
+- [x] Frontend com a URL da API escolhida pelo endereço (local ou produção), aviso de "servidor acordando" e `vercel.json` com cabeçalhos de segurança. *(Parte 4: `api.js`, `ui.js`, `vercel.json`; a publicação na Vercel é feita pelo João depois do merge e conferida na Parte 6)*
 - [ ] `CORS_ORIGINS` só com o domínio da Vercel e checagem de segurança de produção (segredos fora do Git, nada de seed, erros sem stacktrace). *(Parte 5)*
 - [ ] Roteiro de verificação no ar (login, despesa com alerta, simulador, CSV), seção de deploy no `README` e link final. *(Parte 6)*
 - [ ] *(Opcional)* Domínio próprio `.com.br`. *(Parte 7)*
